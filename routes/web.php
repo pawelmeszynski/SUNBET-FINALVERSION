@@ -25,3 +25,8 @@ Route::get('/migrate-fresh', function () {
 Route::get('/fetch-data', function () {
     dump(Artisan::call('data:fetch'));
 });
+
+Route::get('/test', function () {
+    $test = \App\Models\Area::all();
+    dd($test->area_id);
+});

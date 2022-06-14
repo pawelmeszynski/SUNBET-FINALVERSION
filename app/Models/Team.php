@@ -12,4 +12,8 @@ class Team extends Model
     protected $fillable = [
         'id','ext_id', 'name', 'shortName', 'tla', 'crest', 'address', 'website', 'founded', 'clubColors', 'venue'
     ];
+    public function competition()
+    {
+        return $this->belongsToMany(Competition::class, 'competition_team', 'competition_id', 'team_id');
+    }
 }

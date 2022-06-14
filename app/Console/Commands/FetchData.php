@@ -125,14 +125,15 @@ class FetchData extends Command
         foreach ($response5->competitions as $competitions) {
             Competition::updateOrCreate(
                 [
-                    'ext_id'=>$competitions->id
+                    'ext_id' => $competitions->id
                 ],
                 [
-                'name' => $competitions->name,
-                'code' => $competitions->code,
-                'type' => $competitions->type,
-                'emblem' => $competitions->emblem,
-                'plan' => $competitions->plan,
+                    'name' => $competitions->name,
+                    'code' => $competitions->code,
+                    'type' => $competitions->type,
+                    'emblem' => $competitions->emblem,
+                    'plan' => $competitions->plan,
+                    'area_id' => $competitions->area->id
                 ]
             );
         }
