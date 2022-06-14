@@ -31,23 +31,27 @@ class FetchData extends Command
      */
     public function handle()
     {
-        $response = json_decode(Http::withHeaders([
+        $response = Http::withHeaders([
             'X-Auth-Token' => 'eb39c4511bf64a388e73dc566a8a99cd',
-        ])->get('https://api.football-data.org/v4/competitions/WC/teams'));
+        ])->get('https://api.football-data.org/v4/competitions/WC/teams')->object();
 
-        foreach($response->teams as $team)
-        {
-            Team::create([
-                'name' => $team->name,
-                'shortName'=>$team->shortName,
-                'tla' => $team->tla,
-                'crest' => $team->crest,
-                'address' => $team->address,
-                'website' => $team->website,
-                'founded' => $team->founded,
-                'clubColors' => $team->clubColors,
-                'venue' => $team->venue,
-            ]);
+        foreach ($response->teams as $team) {
+            Team::updateOrCreate(
+                [
+                    'id' => '1', 'name' => 'Urugay'
+                ],
+                [
+                    'name' => $team->name,
+                    'shortName' => $team->shortName,
+                    'tla' => $team->tla,
+                    'crest' => $team->crest,
+                    'address' => $team->address,
+                    'website' => $team->website,
+                    'founded' => $team->founded,
+                    'clubColors' => $team->clubColors,
+                    'venue' => $team->venue,
+                ]
+            );
         }
 
         $response2 = json_decode(Http::withHeaders([
@@ -55,12 +59,10 @@ class FetchData extends Command
         ])->get('https://api.football-data.org/v4/competitions/WC/matches'));
 
 
-
-        foreach($response2->matches as $schedule)
-        {
+        foreach ($response2->matches as $schedule) {
             Schedule::create([
                 'utcDate' => Carbon::parse($schedule->utcDate),
-                'status'=>$schedule->status,
+                'status' => $schedule->status,
                 'matchday' => $schedule->matchday,
                 'stage' => $schedule->stage,
                 'group' => $schedule->group,
@@ -68,6 +70,19 @@ class FetchData extends Command
             ]);
         }
 
+
+        $response3 = json_decode(Http::withHeaders([
+            'X-Auth-Token' => 'eb39c4511bf64a388e73dc566a8a99cd',
+        ])->get('https://api.football-data.org/v4/competitions/WC/standings'));
+
+
+        foreach ($response3->standings as $standings) {
+            Schedule::create([
+                'stage' => $standings->stage,
+                'type' => $standings->type,
+                'group' => $standings->group,
+            ]);
+        }
 
 
         return 0;
