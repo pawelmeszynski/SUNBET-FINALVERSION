@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Schedule extends Model
+class Competition extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'id', 'ext_id', 'utcDate', 'status', 'matchday', 'stage', 'group', 'last_updated_at',
+        'id', 'ext_id', 'name', 'code', 'type', 'emblem', 'plan'
     ];
 }

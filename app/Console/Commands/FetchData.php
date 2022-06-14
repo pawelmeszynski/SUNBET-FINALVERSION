@@ -2,7 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Area;
+use App\Models\Competition;
 use App\Models\Schedule;
+use App\Models\Standings;
 use App\Models\Team;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -31,6 +34,12 @@ class FetchData extends Command
      */
     public function handle()
     {
+
+//        $name = $this->choice(
+//            'Which teams you want to import?',
+//            ['WC' => 'World Cup', 'EC'=> 'Euro Championship'],
+//             0
+//        );
         $response = Http::withHeaders([
             'X-Auth-Token' => 'eb39c4511bf64a388e73dc566a8a99cd',
         ])->get('https://api.football-data.org/v4/competitions/WC/teams')->object();
@@ -38,7 +47,7 @@ class FetchData extends Command
         foreach ($response->teams as $team) {
             Team::updateOrCreate(
                 [
-                    'id' => '1', 'name' => 'Urugay'
+                    'ext_id' => $team->id
                 ],
                 [
                     'name' => $team->name,
@@ -60,14 +69,19 @@ class FetchData extends Command
 
 
         foreach ($response2->matches as $schedule) {
-            Schedule::create([
-                'utcDate' => Carbon::parse($schedule->utcDate),
-                'status' => $schedule->status,
-                'matchday' => $schedule->matchday,
-                'stage' => $schedule->stage,
-                'group' => $schedule->group,
-                'last_updated_at' => Carbon::parse($schedule->lastUpdated),
-            ]);
+            Schedule::updateOrCreate(
+                [
+                    'ext_id' => $schedule->id
+                ],
+                [
+                    'utcDate' => Carbon::parse($schedule->utcDate),
+                    'status' => $schedule->status,
+                    'matchday' => $schedule->matchday,
+                    'stage' => $schedule->stage,
+                    'group' => $schedule->group,
+                    'last_updated_at' => Carbon::parse($schedule->lastUpdated),
+                ]
+            );
         }
 
 
@@ -77,13 +91,51 @@ class FetchData extends Command
 
 
         foreach ($response3->standings as $standings) {
-            Schedule::create([
+            Standings::create([
                 'stage' => $standings->stage,
                 'type' => $standings->type,
                 'group' => $standings->group,
             ]);
         }
 
+        $response4 = json_decode(Http::withHeaders([
+            'X-Auth-Token' => 'eb39c4511bf64a388e73dc566a8a99cd',
+        ])->get('https://api.football-data.org/v4/areas'));
+
+
+        foreach ($response4->areas as $areas) {
+            Area::updateOrCreate(
+                [
+                    'ext_id' => $areas->id
+                ],
+                [
+                    'name' => $areas->name,
+                    'countryCode' => $areas->countryCode,
+                    'flag' => $areas->flag,
+                    'parentAreaId' => $areas->parentAreaId,
+                    'parentArea' => $areas->parentArea,
+                ]
+            );
+        }
+        $response5 = json_decode(Http::withHeaders([
+            'X-Auth-Token' => 'eb39c4511bf64a388e73dc566a8a99cd',
+        ])->get('https://api.football-data.org/v4/competitions'));
+
+
+        foreach ($response5->competitions as $competitions) {
+            Competition::updateOrCreate(
+                [
+                    'ext_id'=>$competitions->id
+                ],
+                [
+                'name' => $competitions->name,
+                'code' => $competitions->code,
+                'type' => $competitions->type,
+                'emblem' => $competitions->emblem,
+                'plan' => $competitions->plan,
+                ]
+            );
+        }
 
         return 0;
     }

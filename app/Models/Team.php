@@ -10,6 +10,6 @@ class Team extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id', 'name', 'shortName', 'tla', 'crest', 'address', 'website', 'founded', 'clubColors', 'venue'
+        'id','ext_id', 'name', 'shortName', 'tla', 'crest', 'address', 'website', 'founded', 'clubColors', 'venue'
     ];
 }
