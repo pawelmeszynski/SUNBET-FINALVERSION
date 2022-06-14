@@ -40,49 +40,26 @@ class FetchData extends Command
 //            ['WC' => 'World Cup', 'EC'=> 'Euro Championship'],
 //             0
 //        );
-        $response = Http::withHeaders([
-            'X-Auth-Token' => 'eb39c4511bf64a388e73dc566a8a99cd',
-        ])->get('https://api.football-data.org/v4/competitions/WC/teams')->object();
-
-        foreach ($response->teams as $team) {
-            Team::updateOrCreate(
-                [
-                    'ext_id' => $team->id
-                ],
-                [
-                    'name' => $team->name,
-                    'shortName' => $team->shortName,
-                    'tla' => $team->tla,
-                    'crest' => $team->crest,
-                    'address' => $team->address,
-                    'website' => $team->website,
-                    'founded' => $team->founded,
-                    'clubColors' => $team->clubColors,
-                    'venue' => $team->venue,
-                ]
-            );
-        }
-
-        $response2 = json_decode(Http::withHeaders([
-            'X-Auth-Token' => 'eb39c4511bf64a388e73dc566a8a99cd',
-        ])->get('https://api.football-data.org/v4/competitions/WC/matches'));
-
-
-        foreach ($response2->matches as $schedule) {
-            Schedule::updateOrCreate(
-                [
-                    'ext_id' => $schedule->id
-                ],
-                [
-                    'utcDate' => Carbon::parse($schedule->utcDate),
-                    'status' => $schedule->status,
-                    'matchday' => $schedule->matchday,
-                    'stage' => $schedule->stage,
-                    'group' => $schedule->group,
-                    'last_updated_at' => Carbon::parse($schedule->lastUpdated),
-                ]
-            );
-        }
+//        $response2 = json_decode(Http::withHeaders([
+//            'X-Auth-Token' => 'eb39c4511bf64a388e73dc566a8a99cd',
+//        ])->get('https://api.football-data.org/v4/competitions/WC/matches'));
+//
+//
+//        foreach ($response2->matches as $schedule) {
+//            Schedule::updateOrCreate(
+//                [
+//                    'ext_id' => $schedule->id
+//                ],
+//                [
+//                    'utcDate' => Carbon::parse($schedule->utcDate),
+//                    'status' => $schedule->status,
+//                    'matchday' => $schedule->matchday,
+//                    'stage' => $schedule->stage,
+//                    'group' => $schedule->group,
+//                    'last_updated_at' => Carbon::parse($schedule->lastUpdated),
+//                ]
+//            );
+//        }
 
 
         $response3 = json_decode(Http::withHeaders([
@@ -106,9 +83,10 @@ class FetchData extends Command
         foreach ($response4->areas as $areas) {
             Area::updateOrCreate(
                 [
-                    'ext_id' => $areas->id
+                    'id' => $areas->id,
                 ],
                 [
+                    'id' => $areas->id,
                     'name' => $areas->name,
                     'countryCode' => $areas->countryCode,
                     'flag' => $areas->flag,
@@ -125,9 +103,10 @@ class FetchData extends Command
         foreach ($response5->competitions as $competitions) {
             Competition::updateOrCreate(
                 [
-                    'ext_id' => $competitions->id
+                    'id' => $competitions->id,
                 ],
                 [
+                    'id' => $competitions->id,
                     'name' => $competitions->name,
                     'code' => $competitions->code,
                     'type' => $competitions->type,
@@ -136,6 +115,37 @@ class FetchData extends Command
                     'area_id' => $competitions->area->id
                 ]
             );
+        }
+
+        $response = Http::withHeaders([
+            'X-Auth-Token' => 'eb39c4511bf64a388e73dc566a8a99cd',
+        ])->get('https://api.football-data.org/v4/competitions/WC/teams')->object();
+
+        foreach ($response->teams as $team) {
+            Team::updateOrCreate(
+                [
+                    'id' => $team->id,
+                ],
+                [
+                    'id' => $team->id,
+                    'name' => $team->name,
+                    'shortName' => $team->shortName,
+                    'tla' => $team->tla,
+                    'crest' => $team->crest,
+                    'address' => $team->address,
+                    'website' => $team->website,
+                    'founded' => $team->founded,
+                    'clubColors' => $team->clubColors,
+                    'venue' => $team->venue,
+                ]
+            );
+
+            foreach($team->runningCompetitions as $comp)
+            {
+                $competition = Competition::find($comp->id);
+
+                $competition->teams()->syncWithoutDetaching($team->id);
+            }
         }
 
         return 0;

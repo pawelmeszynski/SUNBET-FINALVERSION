@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Competition;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -13,6 +14,19 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/', function() {
+   $competition = Competition::find(2000);
+   $area = $competition->area;
+
+   dump('competiton: ' . $competition->name);
+   dump('area: ' . $competition->area->name);
+   dump('competions: ' . $area->competitions->count());
+
+   dump('teams: ');
+   dd($competition->teams);
+
+});
 
 Route::get('/migrate', function () {
     dump(Artisan::call('migrate'));
