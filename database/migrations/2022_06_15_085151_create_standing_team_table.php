@@ -13,16 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('standings', function (Blueprint $table) {
+        Schema::create('standing_team', function (Blueprint $table) {
             $table->id();
-            $table->string('stage');
-            $table->string('type');
-            $table->string('group');
-            $table->integer('position')->nullable();
-            $table->unsignedBigInteger('team_id')->nullable();
-            $table->timestamps();
 
+            $table->unsignedBigInteger('team_id')->nullable();
             $table->foreign('team_id')->references('id')->on('teams');
+
+            $table->unsignedBigInteger('standing_id')->nullable();
+            $table->foreign('standing_id')->references('id')->on('standings');
+
+            $table->integer('position');
+
+            $table->timestamps();
         });
     }
 
@@ -33,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('standings');
+        Schema::dropIfExists('standing_team');
     }
 };

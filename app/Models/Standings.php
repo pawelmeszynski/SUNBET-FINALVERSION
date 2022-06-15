@@ -12,4 +12,9 @@ class Standings extends Model
     protected $fillable = [
         'stage', 'group', 'type',
     ];
+
+    public function teams()
+    {
+        return $this->belongsToMany(Team::class, 'standing_team', 'team_id','standing_id');
+    }
 }
