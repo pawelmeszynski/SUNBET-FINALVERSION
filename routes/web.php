@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OngoingMatches;
 use App\Models\Competition;
 use App\Models\Schedule;
 use Illuminate\Support\Facades\Artisan;
@@ -15,8 +16,13 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', function () {
+    return view ('welcome');
+});
 
-Route::get('/', function() {
+Route::get('/matches', [OngoingMatches::class, 'index'])->name('index');
+
+Route::get('/test', function() {
    $competition = Competition::find(2000);
    $area = $competition->area;
    $match = Schedule::first();
@@ -53,3 +59,13 @@ Route::get('/fetch-matches', function () {
     dump(Artisan::call('matches:fetch'));
 });
 
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+});

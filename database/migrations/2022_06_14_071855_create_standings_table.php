@@ -18,11 +18,8 @@ return new class extends Migration
             $table->string('stage');
             $table->string('type');
             $table->string('group');
-            $table->integer('position')->nullable();
-            $table->unsignedBigInteger('team_id')->nullable();
             $table->timestamps();
 
-            $table->foreign('team_id')->references('id')->on('teams');
         });
     }
 

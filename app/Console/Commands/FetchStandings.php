@@ -49,17 +49,24 @@ class FetchStandings extends Command
 
 
         foreach ($response->standings as $standings) {
-            Standings::create([
-                'stage' => $standings->stage,
-                'type' => $standings->type,
-                'group' => $standings->group,
-            ]);
-            foreach($standings->runningCompetitions as $rel)
-            {
-                $teams = Team::find($rel->id);
-
-                $teams->teams()->syncWithoutDetaching($standings->id);
-            }
+//            dd($standings);
+            Standings::updateOrCreate(
+                [
+                    'group' => $standings->group
+                ],
+                [
+                    'stage' => $standings->stage,
+                    'type' => $standings->type,
+                ]);
+//            foreach ($standings->table as $table) {
+//                $team = Team::find($table->team->id);
+//                $team->standings()->sync([
+//                    1 => ['position' => $table->position],
+//                    2 => ['position' => $table->position],
+//                    3 => ['position' => $table->position]
+//                ]);
+//
+//            }
         }
 
         return 0;

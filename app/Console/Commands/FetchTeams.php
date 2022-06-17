@@ -54,12 +54,13 @@ class FetchTeams extends Command
                     'venue' => $team->venue,
                 ]
             );
-            foreach($team->runningCompetitions as $comp)
-            {
-                $competition = Competition::find($comp->id);
-
-                $competition->teams()->syncWithoutDetaching($team->id);
-            }
+//            foreach($team->runningCompetitions as $comp)
+//            {
+////                dd($team);
+//                $competition = Competition::find($comp->id);
+//
+//                $competition->teams()->syncWithoutDetaching($team->id);
+//            }
         }
 
 

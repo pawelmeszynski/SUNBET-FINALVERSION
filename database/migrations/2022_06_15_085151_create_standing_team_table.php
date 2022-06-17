@@ -22,7 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('standing_id')->nullable();
             $table->foreign('standing_id')->references('id')->on('standings');
 
-            $table->integer('position');
+            $table->integer('position')->nullable();
 
             $table->timestamps();
         });

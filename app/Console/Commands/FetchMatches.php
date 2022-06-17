@@ -42,7 +42,6 @@ class FetchMatches extends Command
                     'id' => $match->id
                 ],
                 [
-                    'id' => $match->id,
                     'home_team_id' => $match->homeTeam->id,
                     'away_team_id' => $match->awayTeam->id,
                     'utc_date' => Carbon::parse($match->utcDate),

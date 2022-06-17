@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Standings extends Model
 {
@@ -13,8 +14,8 @@ class Standings extends Model
         'stage', 'group', 'type',
     ];
 
-    public function teams()
+    public function teams(): BelongsToMany
     {
-        return $this->belongsToMany(Team::class, 'standing_team', 'team_id','standing_id');
+        return $this->belongsToMany(Team::class, 'standing_team', 'standing_id','team_id');
     }
 }
