@@ -6,19 +6,22 @@ use App\Http\Requests\StoreScoreRequest;
 use App\Http\Requests\UpdateScoreRequest;
 use App\Models\Predict;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PredictController extends Controller
 {
-    public function create(StoreScoreRequest $request): \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+    public function create(StoreScoreRequest $request)
     {
-
         $data = $request->except('_token');
+
         Predict::create([
+            'match_id' => $data['match_id'],
+            'user_id' => Auth::user()?->id ?? null,
             'home_team_goals' => $data['home_team_goals'],
             'away_team_goals' => $data['away_team_goals'],
-            ]);
+        ]);
 
-        return redirect('matches');
+        return to_route('matches.index');
     }
     public function update(UpdateScoreRequest $updateScoreRequest, Predict $predict): \Illuminate\Http\RedirectResponse
     {

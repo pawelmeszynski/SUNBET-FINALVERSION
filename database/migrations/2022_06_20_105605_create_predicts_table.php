@@ -23,7 +23,7 @@ return new class extends Migration
 
             $table->foreign('competition_id')->references('id')->on('competitions');
             $table->foreign('match_id')->references('id')->on('schedules');
-            $table->foreign('user_id')->references('user_id')->on('sessions');
+            $table->foreign('user_id')->references('id')->on('users');
 
             $table->timestamps();
         });

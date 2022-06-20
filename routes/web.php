@@ -23,11 +23,11 @@ Route::get('/', function () {
     return view ('welcome');
 });
 
-Route::get('matches', [OngoingMatchesController::class, 'index'])->name('index');
-
-Route::put('matches', [PredictController::class, 'update'])->name('update');
-
-Route::post('matches', [PredictController::class, 'create'])->name('create');
+Route::prefix('matches')->group(function() {
+    Route::get('/', [OngoingMatchesController::class, 'index'])->name('matches.index');
+    Route::patch('{match}', [PredictController::class, 'update'])->name('matches.update');
+    Route::post('create', [PredictController::class, 'create'])->name('matches.create');
+});
 
 Route::get('/standings', [StandingsController::class, 'index'])->name('standings');
 

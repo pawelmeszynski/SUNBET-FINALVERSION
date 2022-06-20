@@ -51,21 +51,28 @@
             {{--            {{ dd($match); }}--}}
             <div class="container">
                 <div class="match">
-                    <form action="create" method="POST" enctype="multipart/form-data" >
+                    <form action="{{ route('matches.create') }}" method="POST">
                         @csrf
+                        <input type="hidden" name="match_id" value="{{ $match->id }}">
                         @if(($homeTeam = $match->homeTeam) && ($awayTeam = $match->awayTeam))
                             <p>{{ $homeTeam->name }}</p> <img src="{{ $homeTeam->crest }}">
                             <p>{{ $awayTeam->name}}</p> <img src="{{ $awayTeam->crest }}">
                             <h4>PREDICT SCORE</h4>
                             <label>Team {{ $homeTeam->name }} goals:</label>
                             <input type="number" name="home_team_goals" id="home_team_goals"></br>
+                            @error('home_team_goals')
+                                <p>{{ $message}}</p>
+                            @enderror
                             <label>Team {{ $awayTeam->name }} goals:</label>
                             <input type="number" name="away_team_goals" id="away_team_goals"></br>
+                            @error('away_team_goals')
+                                <p>{{ $message}}</p>
+                            @enderror
                             <input type="submit">Confirm
                         @else
                             <p>x-y</p>
-                    </form>
                         @endif
+                    </form>
                 </div>
             </div>
         @endforeach
