@@ -13,7 +13,7 @@ class Area extends Model
         'id', 'name', 'countryCode', 'flag', 'parentAreaId', 'parentArea'
     ];
 
-    public function competitions()
+    public function competition()
     {
         return $this->hasMany(Competition::class, 'area_id', 'id');
     }

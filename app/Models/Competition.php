@@ -22,5 +22,9 @@ class Competition extends Model
     {
         return $this->belongsToMany(Team::class,'competition_team','team_id','competition_id');
     }
+    public function predict()
+    {
+        return $this->hasOne(Predict::class, 'id', 'competition_id');
+    }
 
 }

@@ -13,13 +13,17 @@ class Schedule extends Model
         'id', 'utcDate', 'status', 'matchday', 'stage', 'group', 'last_updated_at','away_team_id','home_team_id',
     ];
 
-    public function away_team()
+    public function awayTeam(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
-        return $this->hasMany(Team::class, 'id', 'away_team_id');
+        return $this->hasOne(Team::class, 'id', 'away_team_id');
     }
 
-    public function home_team()
+    public function homeTeam(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
-        return $this->hasMany(Team::class, 'id', 'home_team_id');
+        return $this->hasOne(Team::class, 'id', 'home_team_id');
+    }
+    public function predict()
+    {
+        return $this->hasOne(Predict::class, 'id', 'match_id');
     }
 }

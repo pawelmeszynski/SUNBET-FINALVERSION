@@ -1,6 +1,9 @@
 <?php
 
-use App\Http\Controllers\OngoingMatches;
+use App\Http\Controllers\PredictController;
+use App\Http\Controllers\TeamsController;
+use App\Http\Controllers\OngoingMatchesController;
+use App\Http\Controllers\StandingsController;
 use App\Models\Competition;
 use App\Models\Schedule;
 use Illuminate\Support\Facades\Artisan;
@@ -20,7 +23,15 @@ Route::get('/', function () {
     return view ('welcome');
 });
 
-Route::get('/matches', [OngoingMatches::class, 'index'])->name('index');
+Route::get('matches', [OngoingMatchesController::class, 'index'])->name('index');
+
+Route::put('matches', [PredictController::class, 'update'])->name('update');
+
+Route::post('matches', [PredictController::class, 'create'])->name('create');
+
+Route::get('/standings', [StandingsController::class, 'index'])->name('standings');
+
+Route::get('/teams', [TeamsController::class, 'index'])->name('teams');
 
 Route::get('/test', function() {
    $competition = Competition::find(2000);
@@ -64,8 +75,4 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified'
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-});
+]);

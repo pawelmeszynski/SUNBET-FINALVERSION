@@ -60,10 +60,15 @@ class FetchStandings extends Command
                 ]);
 //            foreach ($standings->table as $table) {
 //                $team = Team::find($table->team->id);
-//                $team->standings()->sync([
+//                $team->standings()->syncWithoutDetaching([
 //                    1 => ['position' => $table->position],
 //                    2 => ['position' => $table->position],
-//                    3 => ['position' => $table->position]
+//                    3 => ['position' => $table->position],
+//                    4 => ['position' => $table->position],
+//                    5 => ['position' => $table->position],
+//                    6 => ['position' => $table->position],
+//                    7 => ['position' => $table->position],
+//                    8 => ['position' => $table->position],
 //                ]);
 //
 //            }
