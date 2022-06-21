@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('group')->nullable();
             $table->timestamp('last_updated_at')->nullable();
             $table->timestamps();
-            $table->string('winner')->nullable();
+            $table->unsignedBigInteger('winner')->nullable();
             $table->unsignedInteger('home')->default(0);
             $table->unsignedInteger('away')->default(0);
 
