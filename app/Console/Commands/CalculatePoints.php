@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Predict;
+use App\Models\Schedule;
 use Illuminate\Console\Command;
 
 class CalculatePoints extends Command
@@ -27,6 +29,18 @@ class CalculatePoints extends Command
      */
     public function handle()
     {
+        $schedules = Schedule::where('points_calculated', false)->where('status','FINISHED')->get();
+
+        $schedules->each(function (Schedule $schedule) {
+            $schedule->predicts->each(function(Predict $predict) use($schedule) {
+                $isDraw = $schedule->home == $schedule->away;
+                $userPredictedDraw = $predict->home_team_goals == $predict->away_team_goals;
+
+                dump($userPredictedDraw);
+                dd($predict);
+            });
+        });
+
         return 0;
     }
 }
