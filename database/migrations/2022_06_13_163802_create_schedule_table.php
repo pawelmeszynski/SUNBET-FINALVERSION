@@ -24,13 +24,11 @@ return new class extends Migration
             $table->string('group')->nullable();
             $table->timestamp('last_updated_at')->nullable();
             $table->timestamps();
-            $table->unsignedBigInteger('winner')->nullable();
             $table->unsignedInteger('home')->default(0);
             $table->unsignedInteger('away')->default(0);
 
             $table->foreign('home_team_id')->references('id')->on('teams');
             $table->foreign('away_team_id')->references('id')->on('teams');
-            $table->foreign('winner')->references('id')->on('teams');
         });
     }
 
