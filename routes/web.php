@@ -23,7 +23,7 @@ Route::get('/', function () {
     return view ('welcome');
 });
 
-Route::prefix('matches')->group(function() {
+Route::middleware('auth')->prefix('matches')->group(function() {
     Route::get('/', [MatchesController::class, 'index'])->name('matches.index');
     Route::patch('{match}', [MatchesController::class, 'update'])->name('matches.update');
     Route::post('create', [MatchesController::class, 'create'])->name('matches.create');
