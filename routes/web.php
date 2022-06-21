@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\PredictController;
+use App\Http\Controllers\MatchesController;
 use App\Http\Controllers\TeamsController;
-use App\Http\Controllers\OngoingMatchesController;
+use App\Http\Controllers\PredictController;
 use App\Http\Controllers\StandingsController;
 use App\Models\Competition;
 use App\Models\Schedule;
@@ -24,10 +24,12 @@ Route::get('/', function () {
 });
 
 Route::prefix('matches')->group(function() {
-    Route::get('/', [OngoingMatchesController::class, 'index'])->name('matches.index');
-    Route::patch('{match}', [PredictController::class, 'update'])->name('matches.update');
-    Route::post('create', [PredictController::class, 'create'])->name('matches.create');
+    Route::get('/', [MatchesController::class, 'index'])->name('matches.index');
+    Route::patch('{match}', [MatchesController::class, 'update'])->name('matches.update');
+    Route::post('create', [MatchesController::class, 'create'])->name('matches.create');
 });
+
+Route::get('/predict',[PredictController::class, 'points'])->name('points');
 
 Route::get('/standings', [StandingsController::class, 'index'])->name('standings');
 
@@ -65,6 +67,9 @@ Route::get('/fetch-competitions', function () {
 });
 Route::get('/fetch-areas', function () {
     dump(Artisan::call('areas:fetch'));
+});
+Route::get('/fetch-data', function () {
+    dump(Artisan::call('data:fetch'));
 });
 Route::get('/fetch-matches', function () {
     dump(Artisan::call('matches:fetch'));

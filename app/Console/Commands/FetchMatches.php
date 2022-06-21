@@ -36,7 +36,6 @@ class FetchMatches extends Command
 
 
         foreach ($response->matches as $match) {
-
             Schedule::updateOrCreate(
                 [
                     'id' => $match->id
@@ -50,9 +49,13 @@ class FetchMatches extends Command
                     'stage' => $match->stage,
                     'group' => $match->group,
                     'last_updated_at' => Carbon::parse($match->lastUpdated),
-                ]
-            );
+//                    'winner' => $match->score->winner,
+//                    'home' => $match->score->fullTime->home,
+//                    'away' => $match->score->fullTime->away,
+                ]);
+
+            return 0;
         }
-        return 0;
     }
+
 }

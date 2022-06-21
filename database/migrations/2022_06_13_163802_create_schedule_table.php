@@ -24,6 +24,9 @@ return new class extends Migration
             $table->string('group')->nullable();
             $table->timestamp('last_updated_at')->nullable();
             $table->timestamps();
+            $table->string('winner')->nullable();
+            $table->integer('home')->nullable();
+            $table->integer('away')->nullable();
 
             $table->foreign('home_team_id')->references('id')->on('teams');
             $table->foreign('away_team_id')->references('id')->on('teams');

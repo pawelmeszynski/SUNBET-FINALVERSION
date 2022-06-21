@@ -36,6 +36,7 @@
             display: flex;
             justify-content: center;
         }
+
         img {
             height: 30px;
             width: 30px;
@@ -48,7 +49,7 @@
     <h1>Current Matches</h1>
     <div>
         @foreach($matches as $match)
-            {{--            {{ dd($match); }}--}}
+{{--                        {{ dd($match->matchday == 1); }}--}}
             <div class="container">
                 <div class="match">
                     <form action="{{ route('matches.create') }}" method="POST">
@@ -61,12 +62,12 @@
                             <label>Team {{ $homeTeam->name }} goals:</label>
                             <input type="number" name="home_team_goals" id="home_team_goals"></br>
                             @error('home_team_goals')
-                                <p>{{ $message}}</p>
+                            <p>{{ $message}}</p>
                             @enderror
                             <label>Team {{ $awayTeam->name }} goals:</label>
                             <input type="number" name="away_team_goals" id="away_team_goals"></br>
                             @error('away_team_goals')
-                                <p>{{ $message}}</p>
+                            <p>{{ $message}}</p>
                             @enderror
                             <input type="submit">Confirm
                         @else
