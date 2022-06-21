@@ -25,11 +25,12 @@ return new class extends Migration
             $table->timestamp('last_updated_at')->nullable();
             $table->timestamps();
             $table->string('winner')->nullable();
-            $table->integer('home')->nullable();
-            $table->integer('away')->nullable();
+            $table->unsignedInteger('home')->default(0);
+            $table->unsignedInteger('away')->default(0);
 
             $table->foreign('home_team_id')->references('id')->on('teams');
             $table->foreign('away_team_id')->references('id')->on('teams');
+            $table->foreign('winner')->references('id')->on('teams');
         });
     }
 

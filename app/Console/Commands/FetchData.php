@@ -11,7 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 
-class FetchData extends Command
+class   FetchData extends Command
 {
     /**
      * The name and signature of the console command.

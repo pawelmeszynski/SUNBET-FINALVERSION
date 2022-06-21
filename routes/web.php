@@ -29,8 +29,6 @@ Route::prefix('matches')->group(function() {
     Route::post('create', [MatchesController::class, 'create'])->name('matches.create');
 });
 
-Route::get('/predict',[PredictController::class, 'points'])->name('points');
-
 Route::get('/standings', [StandingsController::class, 'index'])->name('standings');
 
 Route::get('/teams', [TeamsController::class, 'index'])->name('teams');
@@ -73,6 +71,9 @@ Route::get('/fetch-data', function () {
 });
 Route::get('/fetch-matches', function () {
     dump(Artisan::call('matches:fetch'));
+});
+Route::get('/calculate-points', function () {
+    dump(Artisan::call('points:calculate'));
 });
 
 
