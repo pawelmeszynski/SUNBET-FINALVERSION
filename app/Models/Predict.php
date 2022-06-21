@@ -50,4 +50,9 @@ class Predict extends Model
     {
         return $this->hasMany(Schedule::class, 'match_id', 'id');
     }
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 }

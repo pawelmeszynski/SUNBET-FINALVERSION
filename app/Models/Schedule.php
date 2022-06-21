@@ -50,7 +50,11 @@ class Schedule extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id', 'utcDate', 'status', 'matchday', 'stage', 'group', 'last_updated_at','away_team_id','home_team_id','home','away',
+        'id', 'utcDate', 'status', 'matchday', 'stage', 'group', 'last_updated_at','away_team_id','home_team_id','home','away', 'points_calculated',
+    ];
+
+    protected $casts = [
+        'points_calculated' => 'boolean',
     ];
 
     public function awayTeam(): \Illuminate\Database\Eloquent\Relations\HasOne

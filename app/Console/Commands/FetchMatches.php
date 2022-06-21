@@ -49,9 +49,8 @@ class FetchMatches extends Command
                     'stage' => $match->stage,
                     'group' => $match->group,
                     'last_updated_at' => Carbon::parse($match->lastUpdated),
-//                    'winner' => $match->score->winner,
-//                    'home' => $match->score->fullTime->home,
-//                    'away' => $match->score->fullTime->away,
+                    'home' => $match->score->fullTime->home ?? 0,
+                    'away' => $match->score->fullTime->away ?? 0,
                 ]);
 
             return 0;
