@@ -26,6 +26,7 @@ return new class extends Migration
             $table->timestamps();
             $table->unsignedInteger('home')->default(0);
             $table->unsignedInteger('away')->default(0);
+            $table->boolean('points_calculated')->default(false);
 
             $table->foreign('home_team_id')->references('id')->on('teams');
             $table->foreign('away_team_id')->references('id')->on('teams');
