@@ -15,7 +15,7 @@ class MatchesController extends Controller
     public function index(): View
     {
         return view('ongoing-matches-list')->with([
-            'matches' => Schedule::paginate(2)
+            'matches' => Schedule::orderBy('matchday', 'asc')->where('matchday', '!=', 'NULL')->get()
         ]); //show matches list
     }
 

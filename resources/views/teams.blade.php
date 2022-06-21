@@ -29,7 +29,9 @@
         h1 {
             text-align: center;
         }
-
+        table {
+            border: 1px solid black;
+        }
     </style>
 </head>
 <body>

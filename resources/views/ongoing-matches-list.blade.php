@@ -60,16 +60,16 @@
                             <p>{{ $awayTeam->name}}</p> <img src="{{ $awayTeam->crest }}">
                             <h4>PREDICT SCORE</h4>
                             <label>Team {{ $homeTeam->name }} goals:</label>
-                            <input type="number" name="home_team_goals" id="home_team_goals"></br>
+                            <input type="number" name="home_team_goals" id="home_team_goals" required></br>
                             @error('home_team_goals')
                             <p>{{ $message}}</p>
                             @enderror
                             <label>Team {{ $awayTeam->name }} goals:</label>
-                            <input type="number" name="away_team_goals" id="away_team_goals"></br>
+                            <input type="number" name="away_team_goals" id="away_team_goals" required></br>
                             @error('away_team_goals')
                             <p>{{ $message}}</p>
                             @enderror
-                            <input type="submit">Confirm
+                            <button type="submit">Confirm </button>
                         @else
                             <p>x-y</p>
                         @endif
