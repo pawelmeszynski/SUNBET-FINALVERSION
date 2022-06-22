@@ -16,7 +16,7 @@ class FetchTeams extends Command
      *
      * @var string
      */
-    protected $signature = 'teams:fetch';
+    protected $signature = 'teams:fetch {code}';
 
     /**
      * The console command description.
@@ -32,36 +32,40 @@ class FetchTeams extends Command
      */
     public function handle()
     {
-        $competition = Competition::all('code');
-
-        dd($competition);
         $response = Http::withHeaders([
             'X-Auth-Token' => 'eb39c4511bf64a388e73dc566a8a99cd',
-        ])->get('https://api.football-data.org/v4/competitions/'.$competition->code.'/teams')->object();
+        ])->get('https://api.football-data.org/v4/competitions/' . $this->argument('code') . '/teams')->object();
 
-        foreach ($response->teams as $team) {
-            Team::updateOrCreate(
-                [
-                    'id' => $team->id,
-                ],
-                [
-                    'id' => $team->id,
-                    'name' => $team->name,
-                    'shortName' => $team->shortName,
-                    'tla' => $team->tla,
-                    'crest' => $team->crest,
-                    'address' => $team->address,
-                    'website' => $team->website,
-                    'founded' => $team->founded,
-                    'clubColors' => $team->clubColors,
-                    'venue' => $team->venue,
-                ]
-            );
-            foreach($team->runningCompetitions as $comp)
-            {
-                $competition = Competition::find($comp->id);
-                $competition->teams()->syncWithoutDetaching($team->id);
+        if(property_exists($response, 'teams')) {
+            foreach ($response->teams as $team) {
+                Team::updateOrCreate(
+                    [
+                        'id' => $team->id,
+                    ],
+                    [
+                        'id' => $team->id,
+                        'name' => $team->name,
+                        'shortName' => $team->shortName,
+                        'tla' => $team->tla,
+                        'crest' => $team->crest,
+                        'address' => $team->address,
+                        'website' => $team->website,
+                        'founded' => $team->founded,
+                        'clubColors' => $team->clubColors,
+                        'venue' => $team->venue,
+                    ]
+                );
+                foreach ($team->runningCompetitions as $comp) {
+                    $competition = Competition::find($comp->id);
+                    if($competition) {
+                        $competition->teams()->syncWithoutDetaching($team->id);
+                    }
+                }
             }
+        }
+        else
+        {
+            dump($response);
         }
 
 

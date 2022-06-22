@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('stage');
             $table->string('type');
-            $table->string('group');
+            $table->string('group')->nullable();
             $table->timestamps();
 
         });

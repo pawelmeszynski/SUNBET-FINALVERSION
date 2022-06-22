@@ -15,7 +15,7 @@ class FetchMatches extends Command
      *
      * @var string
      */
-    protected $signature = 'matches:fetch';
+    protected $signature = 'matches:fetch {code}';
 
     /**
      * The console command description.
@@ -31,32 +31,40 @@ class FetchMatches extends Command
      */
     public function handle()
     {
-        $competition = Competition::all('code');
         $response = json_decode(Http::withHeaders([
             'X-Auth-Token' => 'eb39c4511bf64a388e73dc566a8a99cd',
-        ])->get('https://api.football-data.org/v4/competitions/'.$competition->code.'/matches'));
+        ])->get('https://api.football-data.org/v4/competitions/' . $this->argument('code') . '/matches'));
 
 
-        foreach ($response->matches as $match) {
+        if(property_exists($response, 'matches')) {
+            foreach ($response->matches as $match) {
 //            dd($match->competition->id);
-            Schedule::updateOrCreate(
-                [
-                    'id' => $match->id
-                ],
-                [
-                    'competition_id' => $match->competition->id,
-                    'home_team_id' => $match->homeTeam->id,
-                    'away_team_id' => $match->awayTeam->id,
-                    'utc_date' => Carbon::parse($match->utcDate)->toIso8601ZuluString(),
-                    'status' => $match->status,
-                    'matchday' => $match->matchday,
-                    'stage' => $match->stage,
-                    'group' => $match->group,
-                    'last_updated_at' => Carbon::parse($match->lastUpdated)->toIso8601ZuluString(),
-                    'home' => $match->score->fullTime->home ?? 0,
-                    'away' => $match->score->fullTime->away ?? 0,
-                ]);
-            return 0;
+
+                dump($match->utcDate);
+                dump(Carbon::parse($match->utcDate));
+//            dd(Carbon::parse($match->utcDate)->toDateTimeString());
+                Schedule::updateOrCreate(
+                    [
+                        'id' => $match->id
+                    ],
+                    [
+                        'competition_id' => $match->competition->id,
+                        'home_team_id' => $match->homeTeam->id,
+                        'away_team_id' => $match->awayTeam->id,
+                        'utc_date' => Carbon::parse($match->utcDate),
+                        'status' => $match->status,
+                        'matchday' => $match->matchday,
+                        'stage' => $match->stage,
+                        'group' => $match->group,
+                        'last_updated_at' => Carbon::parse($match->lastUpdated),
+                        'home' => $match->score->fullTime->home ?? 0,
+                        'away' => $match->score->fullTime->away ?? 0,
+                    ]);
+            }
+        }
+        else
+        {
+            dump($response);
         }
     }
 

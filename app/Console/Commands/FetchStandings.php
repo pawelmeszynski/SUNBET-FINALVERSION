@@ -18,7 +18,7 @@ class FetchStandings extends Command
      *
      * @var string
      */
-    protected $signature = 'standings:fetch';
+    protected $signature = 'standings:fetch {code}';
 
     /**
      * The console command description.
@@ -41,30 +41,35 @@ class FetchStandings extends Command
 //             0
 //        );
 //
-        $competition = Competition::all('code');
 
         $response = json_decode(Http::withHeaders([
             'X-Auth-Token' => 'eb39c4511bf64a388e73dc566a8a99cd',
-        ])->get('https://api.football-data.org/v4/competitions/' . $competition->code . '/standings'));
+        ])->get('https://api.football-data.org/v4/competitions/' . $this->argument('code') . '/standings'));
 
 
-        foreach ($response->standings as $standings) {
-            $result = Standings::updateOrCreate(
-                [
-                    'group' => $standings->group
-                ],
-                [
-                    'stage' => $standings->stage,
-                    'type' => $standings->type,
-                ]);
-            foreach ($standings->table as $table) {
+        if(property_exists($response, 'standings')) {
+            foreach ($response->standings as $standings) {
+                $result = Standings::updateOrCreate(
+                    [
+                        'group' => $standings->group
+                    ],
+                    [
+                        'stage' => $standings->stage,
+                        'type' => $standings->type,
+                    ]);
+                foreach ($standings->table as $table) {
 
-                $team = Team::find($table->team->id);
-                $team->standings()->syncWithoutDetaching([
-                    $result->id => ['position' => $table->position],
-                ]);
+                    $team = Team::find($table->team->id);
+                    $team->standings()->syncWithoutDetaching([
+                        $result->id => ['position' => $table->position],
+                    ]);
 
+                }
             }
+        }
+        else
+        {
+            dump($response);
         }
 
         return 0;

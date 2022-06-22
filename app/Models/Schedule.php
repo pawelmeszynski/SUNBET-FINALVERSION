@@ -54,6 +54,8 @@ class Schedule extends Model
     ];
 
     protected $casts = [
+        'utcDate' => 'date',
+        'last_updated_at' => 'date',
         'points_calculated' => 'boolean',
     ];
 

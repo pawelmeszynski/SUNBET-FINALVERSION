@@ -34,20 +34,27 @@ class FetchAreas extends Command
         ])->get('https://api.football-data.org/v4/areas'));
 
 
-        foreach ($response->areas as $areas) {
-            Area::updateOrCreate(
-                [
-                    'id' => $areas->id,
-                ],
-                [
-                    'id' => $areas->id,
-                    'name' => $areas->name,
-                    'countryCode' => $areas->countryCode,
-                    'flag' => $areas->flag,
-                    'parentAreaId' => $areas->parentAreaId,
-                    'parentArea' => $areas->parentArea,
-                ]
-            );
+        if(property_exists($response, 'areas')) {
+            foreach ($response->areas as $areas) {
+                Area::updateOrCreate(
+                    [
+                        'id' => $areas->id,
+                    ],
+                    [
+                        'id' => $areas->id,
+                        'name' => $areas->name,
+                        'countryCode' => $areas->countryCode,
+                        'flag' => $areas->flag,
+                        'parentAreaId' => $areas->parentAreaId,
+                        'parentArea' => $areas->parentArea,
+                    ]
+                );
+            }
+        }
+        else
+        {
+            dump($response);
+
         }
         return 0;
     }

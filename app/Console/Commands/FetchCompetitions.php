@@ -34,22 +34,29 @@ class FetchCompetitions extends Command
         ])->get('https://api.football-data.org/v4/competitions'));
 
 
-        foreach ($response->competitions as $competitions) {
-            Competition::updateOrCreate(
-                [
-                    'id' => $competitions->id,
-                ],
-                [
-                    'id' => $competitions->id,
-                    'name' => $competitions->name,
-                    'code' => $competitions->code,
-                    'type' => $competitions->type,
-                    'emblem' => $competitions->emblem,
-                    'plan' => $competitions->plan,
-                    'area_id' => $competitions->area->id
-                ]
-            );
+        if(property_exists($response, 'competitions')) {
+            foreach ($response->competitions as $competitions) {
+                Competition::updateOrCreate(
+                    [
+                        'id' => $competitions->id,
+                    ],
+                    [
+                        'id' => $competitions->id,
+                        'name' => $competitions->name,
+                        'code' => $competitions->code,
+                        'type' => $competitions->type,
+                        'emblem' => $competitions->emblem,
+                        'plan' => $competitions->plan,
+                        'area_id' => $competitions->area->id
+                    ]
+                );
+            }
         }
+        else
+        {
+            dump($response);
+        }
+
         return 0;
     }
 }
