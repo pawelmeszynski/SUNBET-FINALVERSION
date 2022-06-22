@@ -12,7 +12,7 @@ class StandingsController extends Controller
 {
     public function index(): View
     {
-        return view('standings')->with([
+        return view('matches.standings')->with([
             'standings' => Standings::all(),
         ]); //show matches list
     }

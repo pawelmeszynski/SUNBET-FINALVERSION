@@ -1,0 +1,28 @@
+body {
+    font-family: 'Nunito', sans-serif;
+}
+
+.match {
+    justify-content: center;
+    text-align: center;
+    border: 1px solid black;
+    width: 400px;
+    border-radius: 6px;
+    margin-bottom: 2%;
+    padding: 10px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+img {
+    height: 30px;
+    width: 30px;
+}
+

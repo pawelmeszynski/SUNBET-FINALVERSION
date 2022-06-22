@@ -14,7 +14,7 @@ class MatchesController extends Controller
 {
     public function index(): View
     {
-        return view('ongoing-matches-list')->with([
+        return view('matches.ongoing-matches-list')->with([
             'matches' => Schedule::orderBy('matchday', 'asc')->where('matchday', '!=', 'NULL')->whereDoesntHave('predicts', function($query) {
                 $query->where('user_id', Auth::user()->id);
             })->get()

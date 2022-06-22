@@ -41,16 +41,15 @@ class FetchStandings extends Command
 //             0
 //        );
 //
-
+        $competition = Competition::all('code');
 
         $response = json_decode(Http::withHeaders([
             'X-Auth-Token' => 'eb39c4511bf64a388e73dc566a8a99cd',
-        ])->get('https://api.football-data.org/v4/competitions/WC/standings'));
+        ])->get('https://api.football-data.org/v4/competitions/' . $competition->code . '/standings'));
 
 
         foreach ($response->standings as $standings) {
-//            dd($standings);
-            Standings::updateOrCreate(
+            $result = Standings::updateOrCreate(
                 [
                     'group' => $standings->group
                 ],
@@ -59,11 +58,10 @@ class FetchStandings extends Command
                     'type' => $standings->type,
                 ]);
             foreach ($standings->table as $table) {
+
                 $team = Team::find($table->team->id);
                 $team->standings()->syncWithoutDetaching([
-                    1 => ['position' => $table->position],
-                    2 => ['position' => $table->position],
-                    3 => ['position' => $table->position],
+                    $result->id => ['position' => $table->position],
                 ]);
 
             }

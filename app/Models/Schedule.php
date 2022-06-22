@@ -50,7 +50,7 @@ class Schedule extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id', 'utcDate', 'status', 'matchday', 'stage', 'group', 'last_updated_at','away_team_id','home_team_id','home','away', 'points_calculated',
+        'id','competition_id', 'utcDate', 'status', 'matchday', 'stage', 'group', 'last_updated_at','away_team_id','home_team_id','home','away', 'points_calculated',
     ];
 
     protected $casts = [
@@ -69,5 +69,9 @@ class Schedule extends Model
     public function predicts()
     {
         return $this->hasMany(Predict::class, 'match_id', 'id');
+    }
+    public function competitions()
+    {
+        return $this->hasMany(Competition::class, 'competition_id', 'id');
     }
 }

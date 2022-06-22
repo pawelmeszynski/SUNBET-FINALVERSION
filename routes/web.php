@@ -1,8 +1,9 @@
 <?php
 
+use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\MatchesController;
 use App\Http\Controllers\TeamsController;
-use App\Http\Controllers\PredictController;
+use App\Http\Controllers\UserStandings;
 use App\Http\Controllers\StandingsController;
 use App\Models\Competition;
 use App\Models\Schedule;
@@ -20,29 +21,31 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/', function () {
-    return view ('welcome');
+    return view('welcome');
 });
 
-Route::middleware('auth')->prefix('matches')->group(function() {
+Route::middleware('auth')->prefix('matches')->group(function () {
     Route::get('/', [MatchesController::class, 'index'])->name('matches.index');
     Route::patch('{match}', [MatchesController::class, 'update'])->name('matches.update');
     Route::post('create', [MatchesController::class, 'create'])->name('matches.create');
 });
 
+Route::get('/userstanding', [UserStandings::class, 'index'])->name('userstanding');
+
 Route::get('/standings', [StandingsController::class, 'index'])->name('standings');
 
 Route::get('/teams', [TeamsController::class, 'index'])->name('teams');
 
-Route::get('/test', function() {
-   $competition = Competition::find(2000);
-   $area = $competition->area;
-   $match = Schedule::first();
-   dump('competiton: ' . $competition->name);
-   dump('area: ' . $competition->area->name);
-   dump('competions: ' . $area->competitions->count());
+Route::get('/test', function () {
+    $competition = Competition::find(2000);
+    $area = $competition->area;
+    $match = Schedule::first();
+    dump('competiton: ' . $competition->name);
+    dump('area: ' . $competition->area->name);
+    dump('competions: ' . $area->competitions->count());
 
-   dump('firstMatch: ');
-   dump('home_team_id' . $match->home_team . 'away_team_id' . $match->away_team);
+    dump('firstMatch: ');
+    dump('home_team_id' . $match->home_team . 'away_team_id' . $match->away_team);
 
 });
 
@@ -75,7 +78,12 @@ Route::get('/fetch-matches', function () {
 Route::get('/calculate-points', function () {
     dump(Artisan::call('points:calculate'));
 });
-
+Route::group(['middleware' => ['auth']], function () {
+    /**
+     * Logout Route
+     */
+    Route::get('/logout', [LogoutController::class, 'perform'])->name('logout.perform');
+});
 
 Route::middleware([
     'auth:sanctum',

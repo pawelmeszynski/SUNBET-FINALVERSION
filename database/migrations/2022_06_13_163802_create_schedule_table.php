@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('competition_id')->nullable();
             $table->unsignedBigInteger('home_team_id')->nullable();
             $table->unsignedBigInteger('away_team_id')->nullable();
             $table->timestamp('utc_date');
@@ -28,6 +29,7 @@ return new class extends Migration
             $table->unsignedInteger('away')->default(0);
             $table->boolean('points_calculated')->default(false);
 
+            $table->foreign('competition_id')->references('id')->on('competitions');
             $table->foreign('home_team_id')->references('id')->on('teams');
             $table->foreign('away_team_id')->references('id')->on('teams');
         });

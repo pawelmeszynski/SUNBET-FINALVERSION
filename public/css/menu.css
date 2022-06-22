@@ -1,0 +1,33 @@
+ul {
+    float: left;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+li a {
+    display: block;
+    float: left;
+    text-align: center;
+    font-size: 0.8em;
+    width: 80px;
+    text-decoration: none;
+    color: aqua;
+    background-color: blue;
+    padding: 5px 5px;
+    margin: 0px 1px 1px 0px;
+    border: 1px solid navy;
+    border-radius: 3px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    box-shadow: 0px 2px 3px gray;
+    -moz-box-shadow: 0px 2px 3px gray;
+    -webkit-box-shadow: 0px 2px 3px gray;
+}
+
+li a:hover {
+    color: blue;
+    background: aqua;
+    border: 1px solid blue;
+}

@@ -38,6 +38,8 @@ class Standings extends Model
 
     public function teams(): BelongsToMany
     {
-        return $this->belongsToMany(Team::class, 'standing_team', 'standing_id','team_id');
+        return $this->belongsToMany(Team::class, 'standing_team',
+            'standing_id',
+            'team_id');
     }
 }

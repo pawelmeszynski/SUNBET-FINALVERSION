@@ -9,6 +9,7 @@ use App\Models\Standings;
 use App\Models\Team;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
 
 class   FetchData extends Command
@@ -34,131 +35,94 @@ class   FetchData extends Command
      */
     public function handle()
     {
-        $response = Http::withHeaders([
-            'X-Auth-Token' => 'eb39c4511bf64a388e73dc566a8a99cd',
-        ])->get('https://api.football-data.org/v4/competitions/WC/teams')->object();
+        Artisan::call('areas:fetch');
+
+        Artisan::call('competitions:fetch');
 
 
-        foreach ($response->teams as $team) {
-            Team::updateOrCreate(
-                [
-                    'id' => $team->id,
-                ],
-                [
-                    'id' => $team->id,
-                    'name' => $team->name,
-                    'shortName' => $team->shortName,
-                    'tla' => $team->tla,
-                    'crest' => $team->crest,
-                    'address' => $team->address,
-                    'website' => $team->website,
-                    'founded' => $team->founded,
-                    'clubColors' => $team->clubColors,
-                    'venue' => $team->venue,
-                ]
-            );
-//            foreach($team->runningCompetitions as $comp)
-//            {
-////                dd($team);
-//                $competition = Competition::find($comp->id);
-//
-//                $competition->teams()->syncWithoutDetaching($team->id);
-//            }
-        }
-        $response1 = json_decode(Http::withHeaders([
-            'X-Auth-Token' => 'eb39c4511bf64a388e73dc566a8a99cd',
-        ])->get('https://api.football-data.org/v4/areas'));
+        $competitions = Competition::all('code');
+        $competitions->each(function ($competition) {
+            $exitCode = Artisan::call('teams:fetch', [
+                'code' => $competition->code,
+            ]);
+            $teams_response = Http::withHeaders([
+                'X-Auth-Token' => 'eb39c4511bf64a388e73dc566a8a99cd',
+            ])->get('https://api.football-data.org/v4/competitions/' . $competition->code . '/teams')->object();
+                dd($teams_response);
+            foreach ($teams_response->teams as $team) {
+                Team::updateOrCreate(
+                    [
+                        'id' => $team->id,
+                    ],
+                    [
+                        'id' => $team->id,
+                        'name' => $team->name,
+                        'shortName' => $team->shortName,
+                        'tla' => $team->tla,
+                        'crest' => $team->crest,
+                        'address' => $team->address,
+                        'website' => $team->website,
+                        'founded' => $team->founded,
+                        'clubColors' => $team->clubColors,
+                        'venue' => $team->venue,
+                    ]
+                );
+                foreach ($team->runningCompetitions as $comp) {
+                    $competition = Competition::find($comp->id);
+
+                    $competition->teams()->syncWithoutDetaching($team->id);
+                }
+            }
+
+            $matches_response = json_decode(Http::withHeaders([
+                'X-Auth-Token' => 'eb39c4511bf64a388e73dc566a8a99cd',
+            ])->get('https://api.football-data.org/v4/competitions/' . $competition->code . '/matches'));
 
 
-        foreach ($response1->areas as $areas) {
-            Area::updateOrCreate(
-                [
-                    'id' => $areas->id,
-                ],
-                [
-                    'id' => $areas->id,
-                    'name' => $areas->name,
-                    'countryCode' => $areas->countryCode,
-                    'flag' => $areas->flag,
-                    'parentAreaId' => $areas->parentAreaId,
-                    'parentArea' => $areas->parentArea,
-                ]
-            );
-        }
-        $response2 = json_decode(Http::withHeaders([
-            'X-Auth-Token' => 'eb39c4511bf64a388e73dc566a8a99cd',
-        ])->get('https://api.football-data.org/v4/competitions'));
+            foreach ($matches_response->matches as $match) {
+
+                Schedule::updateOrCreate(
+                    [
+                        'id' => $match->id
+                    ],
+                    [
+                        'home_team_id' => $match->homeTeam->id,
+                        'away_team_id' => $match->awayTeam->id,
+                        'competition_id' => $match->competition->id,
+                        'utc_date' => Carbon::parse($match->utcDate)->toIso8601ZuluString(),
+                        'status' => $match->status,
+                        'matchday' => $match->matchday,
+                        'stage' => $match->stage,
+                        'group' => $match->group,
+                        'last_updated_at' => Carbon::parse($match->lastUpdated),
+                    ]
+                );
+            }
+            Artisan::call('standings:fetch');
+            $standings_response = json_decode(Http::withHeaders([
+                'X-Auth-Token' => 'eb39c4511bf64a388e73dc566a8a99cd',
+            ])->get('https://api.football-data.org/v4/competitions/' . $competition->code . '/standings'));
 
 
-        foreach ($response2->competitions as $competitions) {
-            Competition::updateOrCreate(
-                [
-                    'id' => $competitions->id,
-                ],
-                [
-                    'id' => $competitions->id,
-                    'name' => $competitions->name,
-                    'code' => $competitions->code,
-                    'type' => $competitions->type,
-                    'emblem' => $competitions->emblem,
-                    'plan' => $competitions->plan,
-                    'area_id' => $competitions->area->id
-                ]
-            );
-        }
-        $response3 = json_decode(Http::withHeaders([
-            'X-Auth-Token' => 'eb39c4511bf64a388e73dc566a8a99cd',
-        ])->get('https://api.football-data.org/v4/competitions/WC/matches'));
-
-
-        foreach ($response3->matches as $match) {
-
-            Schedule::updateOrCreate(
-                [
-                    'id' => $match->id
-                ],
-                [
-                    'home_team_id' => $match->homeTeam->id,
-                    'away_team_id' => $match->awayTeam->id,
-                    'utc_date' => Carbon::parse($match->utcDate),
-                    'status' => $match->status,
-                    'matchday' => $match->matchday,
-                    'stage' => $match->stage,
-                    'group' => $match->group,
-                    'last_updated_at' => Carbon::parse($match->lastUpdated),
-                ]
-            );
-        }
-        $response4 = json_decode(Http::withHeaders([
-            'X-Auth-Token' => 'eb39c4511bf64a388e73dc566a8a99cd',
-        ])->get('https://api.football-data.org/v4/competitions/WC/standings'));
-
-
-        foreach ($response4->standings as $standings) {
+            foreach ($standings_response->standings as $standings) {
 //            dd($standings);
-            Standings::updateOrCreate(
-                [
-                    'group' => $standings->group
-                ],
-                [
-                    'stage' => $standings->stage,
-                    'type' => $standings->type,
-                ]);
-//            foreach ($standings->table as $table) {
-//                $team = Team::find($table->team->id);
-//                $team->standings()->syncWithoutDetaching([
-//                    1 => ['position' => $table->position],
-//                    2 => ['position' => $table->position],
-//                    3 => ['position' => $table->position],
-//                    4 => ['position' => $table->position],
-//                    5 => ['position' => $table->position],
-//                    6 => ['position' => $table->position],
-//                    7 => ['position' => $table->position],
-//                    8 => ['position' => $table->position],
-//                ]);
-//
-//            }
-        }
+                $result = Standings::updateOrCreate(
+                    [
+                        'group' => $standings->group
+                    ],
+                    [
+                        'stage' => $standings->stage,
+                        'type' => $standings->type,
+                    ]);
+                foreach ($standings->table as $table) {
+                    $team = Team::find($table->team->id);
+                    $team->standings()->syncWithoutDetaching([
+                        $result->id => ['position' => $table->position],
+                    ]);
+                }
+            }
+        });
+
         return 0;
     }
 }

@@ -11,7 +11,7 @@ class TeamsController extends Controller
 {
     public function index(): View
     {
-        return view('teams')->with([
+        return view('matches.teams')->with([
             'teams' => Team::all(),
         ]); //show teams list
     }

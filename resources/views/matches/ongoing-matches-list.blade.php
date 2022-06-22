@@ -12,36 +12,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
-
-    <style>
-        body {
-            font-family: 'Nunito', sans-serif;
-        }
-
-        .match {
-
-            text-align: center;
-            border: 1px solid black;
-            width: 400px;
-            border-radius: 6px;
-            margin-bottom: 2%;
-            padding: 10px;
-        }
-
-        h1 {
-            text-align: center;
-        }
-
-        .container {
-            display: flex;
-            justify-content: center;
-        }
-
-        img {
-            height: 30px;
-            width: 30px;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/menu.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body>
 @include('partials.condition')
