@@ -30,7 +30,8 @@ Route::middleware('auth')->prefix('matches')->group(function () {
     Route::post('create', [MatchesController::class, 'create'])->name('matches.create');
     Route::get('/predicts', [MatchesController::class, 'predicts'])->name('matches.predicts');
 });
-Route::get('/predicts', [MatchesController::class, 'predicts'])->name('predicts');
+
+//Route::get('/predicts', [MatchesController::class, 'predicts'])->name('predicts');
 
 Route::get('/userstanding', [UserStandings::class, 'index'])->name('userstanding');
 

@@ -20,29 +20,29 @@
 <div>
     <h1>Current Matches</h1>
     <div>
+        <form action="{{ route('matches.predicts') }}" method="POST">
         @foreach($matches as $match)
             <div class="container">
                 <div class="match">
                     @foreach($predicts as $predict)
-                        <form action="{{ route('matches.predicts') }}" method="POST">
                             @csrf
-                            @method('patch')
                             <input type="hidden" name="match_id" value="{{ $match->id }}">
-                            @if(($match->id == $predict->match_id))
-                                <h3>Your prediction:</h3>
-                                <p>Team {{ $homeTeam = $match->homeTeam->name}} goals: {{ $predict->home_team_goals }}</p>
-                                <p>Team {{ $awayTeam = $match->awayTeam->name}} goals: {{ $predict->away_team_goals }}</p>
-                            @elseif(($match->status == 'FINISHED'))
-                                <h3>Final score</h3>
-                                <p>Team {{ $homeTeam = $match->homeTeam->name}} goals: {{ $match->home }}</p>
-                                <p>Team {{ $awayTeam = $match->awayTeam->name}} goals: {{ $match->away }}</p>
-                            @else
-                            @endif
-                        </form>
+                            @if(($match->id == $predict->match_id)
+                            &&($homeTeam = $match->homeTeam)
+                            &&($awayTeam = $match->awayTeam))
+                                <img src="{{ $homeTeam->crest }}">
+                                <img src="{{ $awayTeam->crest }}">
+                                <p style="font-size: 20px; color:black; font-weight: bold">
+                                    {{ $predict->home_team_goals }} - {{ $predict->away_team_goals }}
+                                </p>
+                                <h3>Final score:</h3>
+                                <p style="font-size: 13px; color:gray">{{ $match->home }} - {{ $match->away }}</p>
+                        @endif
                     @endforeach
                 </div>
             </div>
-        @endforeach
+            @endforeach
+        </form>
     </div>
 </div>
 </body>

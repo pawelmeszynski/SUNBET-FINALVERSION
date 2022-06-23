@@ -15,25 +15,31 @@ class MatchesController extends Controller
     public function index(): View
     {
         return view('matches.ongoing-matches-list')->with([
-            'predicts' => Predict::all(),
             'matches' => Schedule::orderBy('matchday', 'asc')
                 ->where('matchday', '!=', 'NULL')
-                ->where('competition_id', '=', '2000')->get()
+                ->where('competition_id', '=', '2000')->whereDoesntHave('predicts', function($query) {
+                    $query->where('user_id', Auth::user()->id);
+                })->get()
         ]); //show matches list
     }
 
     public function create(StoreScoreRequest $request)
     {
         $data = $request->except('_token');
+        $data = $data['matches'];
 
-        Predict::create([
-            'match_id' => $data['match_id'],
-            'user_id' => Auth::user()?->id ?? null,
-            'home_team_goals' => $data['home_team_goals'],
-            'away_team_goals' => $data['away_team_goals'],
-        ]);
+        foreach($data as $key =>$item) {
+            if (($item['home_team_goals'] != null) && ($item['away_team_goals'] != null)) {
+                Predict::create([
+                    'match_id' => $key,
+                    'user_id' => Auth::user()?->id ?? null,
+                    'home_team_goals' => $item['home_team_goals'],
+                    'away_team_goals' => $item['away_team_goals'],
+                ]);
+            }
+        }
 
-        return to_route('matches.index');
+        return to_route('matches.predicts');
     }
 
     public function update(UpdateScoreRequest $updateScoreRequest, Predict $predict): \Illuminate\Http\RedirectResponse
@@ -57,10 +63,11 @@ class MatchesController extends Controller
     public function predicts()
     {
         return view('matches.predicts')->with([
-            'predicts' => Predict::all(),
-            'matches' => Schedule::orderBy('matchday', 'asc')
+            'matches' => Schedule::orderBy('matchday', 'Asc')
                 ->where('matchday', '!=', 'NULL')
-                ->where('competition_id', '=', '2000')->get()
+                ->where('competition_id', '=', '2000')->get(),
+            'predicts' => Predict::all()->where('competition_id', '=', '2000'),
+
         ]);
     }
 }

@@ -24,9 +24,8 @@ class StoreScoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'match_id' => ['required', 'integer', 'exists:schedules,id'],
-            'home_team_goals' => ['required', 'integer'],
-            'away_team_goals' => ['required', 'integer'],
+            'home_team_goals' => ['integer'],
+            'away_team_goals' => ['integer'],
         ];
     }
 }

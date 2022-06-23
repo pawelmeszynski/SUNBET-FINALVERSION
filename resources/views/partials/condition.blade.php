@@ -11,6 +11,8 @@
                     <i class="bi bi-calendar3"></i>Schedule</a></li>
                 <li><a href="{{ url('/teams') }}" class="text-sm text-gray-700 dark:text-gray-500 no-underline">
                     <i class="bi bi-list-ol"></i>Team's</a></li>
+                <li><a href="{{ url('/matches/predicts') }}" class="text-sm text-gray-700 dark:text-gray-500 no-underline">
+                    <i class="bi bi-search"></i>Predicts</a></li>
                 <li><a href="{{ url('/userstanding') }}" class="text-sm text-gray-700 dark:text-gray-500 no-underline">
                     <i class="bi bi-person-lines-fill"></i>Users</a></li>
                 <li><a href="{{ url('/logout') }}" class="text-sm text-gray-700 dark:text-gray-500 no-underline">

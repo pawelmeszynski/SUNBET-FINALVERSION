@@ -13,7 +13,7 @@ class StandingsController extends Controller
     public function index(): View
     {
         return view('matches.standings')->with([
-            'standings' => Standings::all(),
+            'standings' => Standings::all()
         ]); //show matches list
     }
     public function store(Request $request): \Illuminate\Http\RedirectResponse
