@@ -52,14 +52,25 @@ class Competition extends Model
 
     public function teams()
     {
-        return $this->belongsToMany(Team::class,'competition_team','competition_id','team_id');
+        return $this->belongsToMany(Team::class,
+            'competition_team',
+            'competition_id',
+            'team_id');
     }
     public function predict()
     {
-        return $this->hasOne(Predict::class, 'id', 'competition_id');
+        return $this->hasOne(Predict::class,
+            'id',
+            'competition_id');
     }
     public function schedule()
     {
-        return $this->hasOne(Schedule::class, 'id', 'competition_id');
+        return $this->hasOne(Schedule::class,
+            'id',
+            'competition_id');
+    }
+    public function standings()
+    {
+        return $this->hasMany(Standings::class, 'id', 'competition_id');
     }
 }

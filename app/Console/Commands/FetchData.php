@@ -45,6 +45,7 @@ class   FetchData extends Command
             $exitCode = Artisan::call('teams:fetch ' . $competition->code);
             $exitCode = Artisan::call('matches:fetch ' . $competition->code);
             $exitCode = Artisan::call('standings:fetch ' . $competition->code);
+            sleep(60);
         });
 
         return 0;

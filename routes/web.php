@@ -26,9 +26,11 @@ Route::get('/', function () {
 
 Route::middleware('auth')->prefix('matches')->group(function () {
     Route::get('/', [MatchesController::class, 'index'])->name('matches.index');
-    Route::patch('{match}', [MatchesController::class, 'update'])->name('matches.update');
+    Route::patch('/update', [MatchesController::class, 'update'])->name('matches.update');
     Route::post('create', [MatchesController::class, 'create'])->name('matches.create');
+    Route::get('/predicts', [MatchesController::class, 'predicts'])->name('matches.predicts');
 });
+Route::get('/predicts', [MatchesController::class, 'predicts'])->name('predicts');
 
 Route::get('/userstanding', [UserStandings::class, 'index'])->name('userstanding');
 
@@ -42,7 +44,7 @@ Route::get('/test', function () {
     $match = Schedule::first();
     dump('competiton: ' . $competition->name);
     dump('area: ' . $competition->area->name);
-    dump('competions: ' . $area->competitions->count());
+    dump('competions: ' . $area->competitions);
 
     dump('firstMatch: ');
     dump('home_team_id' . $match->home_team . 'away_team_id' . $match->away_team);

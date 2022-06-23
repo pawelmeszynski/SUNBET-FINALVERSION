@@ -23,42 +23,21 @@
         @foreach($matches as $match)
             <div class="container">
                 <div class="match">
-                    <form action="{{ route('matches.create') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="match_id" value="{{ $match->id }}">
-                        @if(($homeTeam = $match->homeTeam) && ($awayTeam = $match->awayTeam))
-                            <p>{{ $homeTeam->name }}</p> <img src="{{ $homeTeam->crest }}">
-                            <p>{{ $awayTeam->name}}</p> <img src="{{ $awayTeam->crest }}">
-                            <h4>PREDICT SCORE</h4>
-                            <label>Team {{ $homeTeam->name }} goals:</label>
-                            <input type="number" name="home_team_goals" id="home_team_goals" required></br>
-                            @error('home_team_goals')
-                            <p>{{ $message}}</p>
-                            @enderror
-                            <label>Team {{ $awayTeam->name }} goals:</label>
-                            <input type="number" name="away_team_goals" id="away_team_goals" required></br>
-                            @error('away_team_goals')
-                            <p>{{ $message}}</p>
-                            @enderror
-                            <button type="submit">Confirm </button>
-                        @else
-                            <p>x-y</p>
-                        @endif
-                    </form>
                     @foreach($predicts as $predict)
-                        <form action="{{ route('matches.update') }}" method="POST">
+                        <form action="{{ route('matches.predicts') }}" method="POST">
                             @csrf
                             @method('patch')
                             <input type="hidden" name="match_id" value="{{ $match->id }}">
-                        @if(($match->id == $predict->match_id))
-                            <h3>Your prediction:</h3>
+                            @if(($match->id == $predict->match_id))
+                                <h3>Your prediction:</h3>
                                 <p>Team {{ $homeTeam = $match->homeTeam->name}} goals: {{ $predict->home_team_goals }}</p>
                                 <p>Team {{ $awayTeam = $match->awayTeam->name}} goals: {{ $predict->away_team_goals }}</p>
                             @elseif(($match->status == 'FINISHED'))
                                 <h3>Final score</h3>
                                 <p>Team {{ $homeTeam = $match->homeTeam->name}} goals: {{ $match->home }}</p>
                                 <p>Team {{ $awayTeam = $match->awayTeam->name}} goals: {{ $match->away }}</p>
-                        @endif
+                            @else
+                            @endif
                         </form>
                     @endforeach
                 </div>

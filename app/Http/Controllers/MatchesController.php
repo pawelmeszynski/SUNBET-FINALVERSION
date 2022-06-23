@@ -15,9 +15,10 @@ class MatchesController extends Controller
     public function index(): View
     {
         return view('matches.ongoing-matches-list')->with([
-            'matches' => Schedule::orderBy('matchday', 'asc')->where('matchday', '!=', 'NULL')->whereDoesntHave('predicts', function($query) {
-                $query->where('user_id', Auth::user()->id);
-            })->get()
+            'predicts' => Predict::all(),
+            'matches' => Schedule::orderBy('matchday', 'asc')
+                ->where('matchday', '!=', 'NULL')
+                ->where('competition_id', '=', '2000')->get()
         ]); //show matches list
     }
 
@@ -34,18 +35,32 @@ class MatchesController extends Controller
 
         return to_route('matches.index');
     }
+
     public function update(UpdateScoreRequest $updateScoreRequest, Predict $predict): \Illuminate\Http\RedirectResponse
     {
         $data = $updateScoreRequest->validated(); //get only validated data
         $result = $predict->update([
+            'match_id' => $data['match_id'],
+            'user_id' => Auth::user()?->id ?? null,
             'home_team_goals' => $data['home_team_goals'],
             'away_team_goals' => $data['away_team_goals'],
         ]); //update score with new data
+
         return back()->with([
             'status' => [
                 'status' => $result ? 'success' : 'failed',
                 'message' => $result ? 'Score succesfully edited' : 'Something went wrong, sorry',
             ],
+        ]);
+    }
+
+    public function predicts()
+    {
+        return view('matches.predicts')->with([
+            'predicts' => Predict::all(),
+            'matches' => Schedule::orderBy('matchday', 'asc')
+                ->where('matchday', '!=', 'NULL')
+                ->where('competition_id', '=', '2000')->get()
         ]);
     }
 }

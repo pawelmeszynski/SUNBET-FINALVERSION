@@ -33,7 +33,7 @@ class Standings extends Model
     use HasFactory;
 
     protected $fillable = [
-        'stage', 'group', 'type',
+        'stage', 'group', 'type','competition_id',
     ];
 
     public function teams(): BelongsToMany
@@ -41,5 +41,9 @@ class Standings extends Model
         return $this->belongsToMany(Team::class, 'standing_team',
             'standing_id',
             'team_id');
+    }
+    public function competition()
+    {
+        return $this->belongsTo(Competition::class, 'competition_id', 'id',);
     }
 }

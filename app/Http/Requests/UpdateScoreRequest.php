@@ -24,8 +24,8 @@ class UpdateScoreRequest extends FormRequest
     public function rules() : array
     {
         return [
-            'home_team_goals' => ['required', 'number'],
-            'away_team_goals' => ['required', 'number'],
+            'home_team_goals' => ['required', 'integer'],
+            'away_team_goals' => ['required', 'integer'],
         ];
     }
 }

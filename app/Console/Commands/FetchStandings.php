@@ -51,19 +51,19 @@ class FetchStandings extends Command
             foreach ($response->standings as $standings) {
                 $result = Standings::updateOrCreate(
                     [
-                        'group' => $standings->group
+                        'group' => $standings->group,
+                        'competition_id' => $response->competition->id
                     ],
                     [
                         'stage' => $standings->stage,
                         'type' => $standings->type,
                     ]);
-                foreach ($standings->table as $table) {
 
+                foreach ($standings->table as $table) {
                     $team = Team::find($table->team->id);
                     $team->standings()->syncWithoutDetaching([
                         $result->id => ['position' => $table->position],
                     ]);
-
                 }
             }
         }

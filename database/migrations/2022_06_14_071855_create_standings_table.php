@@ -15,9 +15,10 @@ return new class extends Migration
     {
         Schema::create('standings', function (Blueprint $table) {
             $table->id();
-            $table->string('stage');
-            $table->string('type');
+            $table->string('stage')->nullable();
+            $table->string('type')->nullable();
             $table->string('group')->nullable();
+            $table->unsignedBigInteger('competition_id')->nullable();
             $table->timestamps();
 
         });
