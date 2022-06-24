@@ -36,7 +36,7 @@ class FetchTeams extends Command
             'X-Auth-Token' => 'eb39c4511bf64a388e73dc566a8a99cd',
         ])->get('https://api.football-data.org/v4/competitions/' . $this->argument('code') . '/teams')->object();
 
-        if(property_exists($response, 'teams')) {
+        if (property_exists($response, 'teams')) {
             foreach ($response->teams as $team) {
                 Team::updateOrCreate(
                     [
@@ -57,14 +57,12 @@ class FetchTeams extends Command
                 );
                 foreach ($team->runningCompetitions as $comp) {
                     $competition = Competition::find($comp->id);
-                    if($competition) {
+                    if ($competition) {
                         $competition->teams()->syncWithoutDetaching($team->id);
                     }
                 }
             }
-        }
-        else
-        {
+        } else {
             dump($response);
         }
 

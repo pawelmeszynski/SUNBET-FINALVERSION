@@ -3,18 +3,17 @@
         <x-slot name="logo">
             <x-jet-authentication-card-logo />
         </x-slot>
-
         <x-jet-validation-errors class="mb-4" />
+        <link rel="stylesheet" href="{{ asset('css/menu.css') }}">
 
         @if (session('status'))
             <div class="mb-4 font-medium text-sm text-green-600">
                 {{ session('status') }}
             </div>
         @endif
-
+        @include('partials.condition')
         <form method="POST" action="{{ route('login') }}">
             @csrf
-
             <div>
                 <x-jet-label for="email" value="{{ __('Email') }}" />
                 <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />

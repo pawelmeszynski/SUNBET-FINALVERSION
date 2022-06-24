@@ -71,6 +71,6 @@ class Competition extends Model
     }
     public function standings()
     {
-        return $this->hasMany(Standings::class, 'id', 'competition_id');
+        return $this->hasMany(Standings::class);
     }
 }

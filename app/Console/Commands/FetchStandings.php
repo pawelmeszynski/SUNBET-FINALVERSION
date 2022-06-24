@@ -47,7 +47,7 @@ class FetchStandings extends Command
         ])->get('https://api.football-data.org/v4/competitions/' . $this->argument('code') . '/standings'));
 
 
-        if(property_exists($response, 'standings')) {
+        if (property_exists($response, 'standings')) {
             foreach ($response->standings as $standings) {
                 $result = Standings::updateOrCreate(
                     [
@@ -62,13 +62,23 @@ class FetchStandings extends Command
                 foreach ($standings->table as $table) {
                     $team = Team::find($table->team->id);
                     $team->standings()->syncWithoutDetaching([
-                        $result->id => ['position' => $table->position],
+                        $result->id => [
+                            'position' => $table->position,
+                            'played_Games'=> $table->playedGames,
+                            'form' => $table->form,
+                            'won' => $table->won,
+                            'draw' => $table->draw,
+                            'lost' => $table->lost,
+                            'points' => $table->points,
+                            'goals_For' => $table->goalsFor,
+                            'goals_Against' => $table->goalsAgainst,
+                            'goal_Difference' => $table->goalDifference,
+                            ],
                     ]);
                 }
+
             }
-        }
-        else
-        {
+        } else {
             dump($response);
         }
 

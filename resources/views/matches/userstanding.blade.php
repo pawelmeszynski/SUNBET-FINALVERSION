@@ -21,7 +21,6 @@
     <h1>User points table:</h1>
     <div>
         @foreach($name as $name)
-{{--                {{ dd($name->points); }}--}}
             <div class="match">
                 <p>{{ $name->name }} - {{ $name->points }} </p>
             </div>

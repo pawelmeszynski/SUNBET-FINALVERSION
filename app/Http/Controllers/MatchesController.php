@@ -9,17 +9,20 @@ use App\Models\Schedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Symfony\Component\Console\Input\Input;
 
 class MatchesController extends Controller
 {
     public function index(): View
     {
+
         return view('matches.ongoing-matches-list')->with([
             'matches' => Schedule::orderBy('matchday', 'asc')
                 ->where('matchday', '!=', 'NULL')
-                ->where('competition_id', '=', '2000')->whereDoesntHave('predicts', function($query) {
+                ->where('competition_id', '=', '2000')
+                ->whereDoesntHave('predicts', function ($query) {
                     $query->where('user_id', Auth::user()->id);
-                })->get()
+                })->paginate(8)
         ]); //show matches list
     }
 
@@ -28,7 +31,7 @@ class MatchesController extends Controller
         $data = $request->except('_token');
         $data = $data['matches'];
 
-        foreach($data as $key =>$item) {
+        foreach ($data as $key => $item) {
             if (($item['home_team_goals'] != null) && ($item['away_team_goals'] != null)) {
                 Predict::create([
                     'match_id' => $key,
@@ -62,12 +65,13 @@ class MatchesController extends Controller
 
     public function predicts()
     {
+//        if (Predict::where('match_id', '=',Predict::exists())) {
         return view('matches.predicts')->with([
-            'matches' => Schedule::orderBy('matchday', 'Asc')
+            'matches' => Schedule::all()
                 ->where('matchday', '!=', 'NULL')
-                ->where('competition_id', '=', '2000')->get(),
-            'predicts' => Predict::all()->where('competition_id', '=', '2000'),
+                ->where('competition_id', '=', '2000'),
+            'predicts' => Predict::paginate(4),
+        ]); // user found
 
-        ]);
     }
 }

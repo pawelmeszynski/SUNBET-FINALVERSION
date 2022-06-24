@@ -19,18 +19,20 @@
     <h1>Current Matches</h1>
     <div>
         @foreach($standings as $standing)
-{{--                        {{ dd($standing->competition_id); }}--}}
+{{--                                {{ dd($standing); }}--}}
             <div class="match">
                 <p>{{ $standing->group }} </p>
                 @foreach($standing->teams as $team)
+{{--                    {{ dd($team); }}--}}
                     <div>
-                    <p>{{ $team->name }}</p>
+                    <p>{{ $team->name }} </p>
                     <img src="{{ $team->crest }}">
                     </div>
                 @endforeach
             </div>
         @endforeach
     </div>
+
 </div>
 </body>
 </html>

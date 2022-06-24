@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('css/menu.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
@@ -21,6 +21,7 @@
     <h1>Current Matches</h1>
     <div>
         <form action="{{ route('matches.create') }}" method="POST">
+            <button type="submit" class="btn btn-success">Confirm</button>
             @foreach($matches as $match)
                 <div class="container">
                     <div class="match">
@@ -45,9 +46,9 @@
                     </div>
                 </div>
             @endforeach
-            <button type="submit">Confirm</button>
         </form>
     </div>
+    {{ $matches->links() }}
 </div>
 </body>
 </html>

@@ -7,6 +7,7 @@ use App\Http\Controllers\UserStandings;
 use App\Http\Controllers\StandingsController;
 use App\Models\Competition;
 use App\Models\Schedule;
+use App\Models\Team;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -46,7 +47,6 @@ Route::get('/test', function () {
     dump('competiton: ' . $competition->name);
     dump('area: ' . $competition->area->name);
     dump('competions: ' . $area->competitions);
-
     dump('firstMatch: ');
     dump('home_team_id' . $match->home_team . 'away_team_id' . $match->away_team);
 

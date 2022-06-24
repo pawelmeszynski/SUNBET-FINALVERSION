@@ -23,6 +23,17 @@ return new class extends Migration
             $table->foreign('standing_id')->references('id')->on('standings');
 
             $table->integer('position')->nullable();
+            $table->integer('played_Games')->nullable();
+            $table->string('form')->nullable();
+            $table->integer('won')->nullable();
+            $table->integer('draw')->nullable();
+            $table->integer('lost')->nullable();
+            $table->integer('points')->nullable();
+            $table->integer('goals_For')->nullable();
+            $table->integer('goals_Against')->nullable();
+            $table->integer('goal_Difference')->nullable();
+
+
 
             $table->timestamps();
         });

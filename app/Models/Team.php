@@ -64,14 +64,16 @@ class Team extends Model
 
     public function competition()
     {
-        return $this->belongsToMany(Competition::class, 'competition_team',
-            'competition_id',
-            'team_id');
+        return $this->belongsToMany(Competition::class,
+            'competition_team',
+            'team_id',
+            'competition_id');
     }
 
     public function standings(): BelongsToMany
     {
-        return $this->belongsToMany(Standings::class, 'standing_team',
+        return $this->belongsToMany(Standings::class,
+            'standing_team',
             'team_id',
             'standing_id');
     }

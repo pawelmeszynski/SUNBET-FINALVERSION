@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Competition;
 use App\Models\Standings;
 use App\Models\Schedule;
 use App\Models\Team;
@@ -13,7 +14,7 @@ class StandingsController extends Controller
     public function index(): View
     {
         return view('matches.standings')->with([
-            'standings' => Standings::all()
+            'standings' => Standings::all()->where('competition_id', '=', '2000')
         ]); //show matches list
     }
     public function store(Request $request): \Illuminate\Http\RedirectResponse
