@@ -50,23 +50,23 @@ class Schedule extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id','competition_id', 'utcDate', 'status', 'matchday', 'stage', 'group', 'last_updated_at','away_team_id','home_team_id','home','away', 'points_calculated',
+        'id','competition_id', 'utc_date', 'status', 'matchday', 'stage', 'group', 'last_updated_at','away_team_id','home_team_id','home','away', 'points_calculated',
     ];
 
     protected $casts = [
-        'utcDate' => 'date',
+        'utc_date'=> 'date',
         'last_updated_at' => 'date',
         'points_calculated' => 'boolean',
     ];
 
     public function awayTeam(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
-        return $this->hasOne(Team::class, 'id', 'away_team_id');
+        return $this->hasOne(Team::class, 'away_team_id', 'id');
     }
 
     public function homeTeam(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
-        return $this->hasOne(Team::class, 'id', 'home_team_id');
+        return $this->hasOne(Team::class, 'home_team_id', 'id');
     }
     public function predicts()
     {

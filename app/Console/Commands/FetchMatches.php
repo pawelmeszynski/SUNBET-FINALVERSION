@@ -40,9 +40,9 @@ class FetchMatches extends Command
             foreach ($response->matches as $match) {
 //            dd($match->competition->id);
 
-                dump($match->utcDate);
-                dump(Carbon::parse($match->utcDate));
-//            dd(Carbon::parse($match->utcDate)->toDateTimeString());
+//                dump($match->utcDate);
+//                dump($match->utcDate);
+//            dd($match->homeTeam->id);
                 Schedule::updateOrCreate(
                     [
                         'id' => $match->id
@@ -51,7 +51,7 @@ class FetchMatches extends Command
                         'competition_id' => $match->competition->id,
                         'home_team_id' => $match->homeTeam->id,
                         'away_team_id' => $match->awayTeam->id,
-                        'utc_date' => Carbon::parse($match->utcDate),
+                        'utc_date' => Carbon::parse($match->utcDate)->toDateTimeString(),
                         'status' => $match->status,
                         'matchday' => $match->matchday,
                         'stage' => $match->stage,

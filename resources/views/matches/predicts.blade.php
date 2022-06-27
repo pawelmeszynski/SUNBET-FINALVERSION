@@ -119,7 +119,6 @@
             </div>
         </form>
     </div>
-    {{ $predicts->links() }}
 </div>
 </body>
 </html>

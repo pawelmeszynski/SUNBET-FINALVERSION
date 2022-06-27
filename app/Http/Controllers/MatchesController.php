@@ -65,12 +65,11 @@ class MatchesController extends Controller
 
     public function predicts()
     {
-//        if (Predict::where('match_id', '=',Predict::exists())) {
         return view('matches.predicts')->with([
             'matches' => Schedule::all()
                 ->where('matchday', '!=', 'NULL')
                 ->where('competition_id', '=', '2000'),
-            'predicts' => Predict::paginate(4),
+            'predicts' => Predict::all(),
         ]); // user found
 
     }

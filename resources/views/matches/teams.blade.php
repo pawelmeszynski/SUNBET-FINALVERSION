@@ -20,19 +20,18 @@
     <h1>Team list</h1>
     <div>
         @foreach($competitions as $competition)
-{{--                {{ dd($competition->standings, $competition); }}--}}
+            @foreach($competition->teams as $comp)
                 <div class="match">
-                        <table>
-                            <tr>
-                                <td>{{ $competition->name }} </td>
-                                <td><img src="{{ $competition->emblem }}"></td>
-                            </tr>
-                        </table>
-
+                    <table>
+                        <tr>
+                            <td>{{ $comp->name }} </td>
+                            <td><img src="{{ $comp->crest }}"></td>
+                        </tr>
+                    </table>
                 </div>
+            @endforeach
         @endforeach
     </div>
-{{--    {{ $teams->links() }}--}}
 </div>
 </body>
 </html>

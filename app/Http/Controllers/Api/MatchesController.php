@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreScoreRequest;
+use App\Http\Resources\PredictResource;
+use App\Http\Resources\PredictsCollection;
 use App\Http\Resources\ScheduleResource;
 use App\Http\Resources\SchedulesCollection;
 use App\Models\Predict;
@@ -15,9 +17,7 @@ class MatchesController extends Controller
 {
     public function index()
     {
-
         return new SchedulesCollection(Schedule::paginate(2));
-
     }
 
     public function store(StoreScoreRequest $request): \Illuminate\Http\JsonResponse
@@ -33,7 +33,7 @@ class MatchesController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => "Mail succesfully added",
+            'message' => "Predict succesfully added",
             'emails' => $result
         ], 200);
     }
@@ -53,4 +53,26 @@ class MatchesController extends Controller
             ]
         ];
     }
+
+    public function predicts ()
+    {
+        return new SchedulesCollection(Predict::paginate(2));
+    }
+
+    public function showPredict($id)
+    {
+        $predict = Predict::find($id);
+
+        if ($predict) {
+            return new ScheduleResource($predict);
+        }
+
+        return [
+            'data' => [
+                'status' => 'failed',
+                'error' => 404,
+            ]
+        ];
+    }
+
 }

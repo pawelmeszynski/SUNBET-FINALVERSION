@@ -16,7 +16,7 @@ class TeamsController extends Controller
     public function index(): View
     {
         return view('matches.teams')->with([
-            'competitions' => Competition::all(),
+            'competitions' => Competition::all()->where('id', '=', '2000'),
         ]); //show teams list
 
     }

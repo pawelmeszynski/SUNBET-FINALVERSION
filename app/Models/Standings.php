@@ -40,10 +40,11 @@ class Standings extends Model
     {
         return $this->belongsToMany(Team::class, 'standing_team',
             'standing_id',
-            'team_id');
+            'team_id')->withPivot('position', 'played_Games','form','won','draw','lost','points',
+            'goals_For','goals_For','goal_Difference');
     }
     public function competition()
     {
-        return $this->belongsTo(Competition::class, 'competition_id', 'id',);
+        return $this->belongsTo(Competition::class, 'competition_id', 'id');
     }
 }
