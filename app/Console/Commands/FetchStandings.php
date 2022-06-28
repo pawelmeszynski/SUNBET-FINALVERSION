@@ -48,7 +48,8 @@ class FetchStandings extends Command
 
 
         if (property_exists($response, 'standings')) {
-            foreach ($response->standings as $standings) {
+            foreach ($response->standings as $standings)
+            {
                 $result = Standings::updateOrCreate(
                     [
                         'group' => $standings->group,

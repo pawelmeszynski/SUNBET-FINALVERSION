@@ -30,8 +30,8 @@ return new class extends Migration
             $table->boolean('points_calculated')->default(false);
 
             $table->foreign('competition_id')->references('id')->on('competitions');
-            $table->foreign('home_team_id')->references('id')->on('teams');
-            $table->foreign('away_team_id')->references('id')->on('teams');
+//            $table->foreign('home_team_id')->references('id')->on('teams');
+//            $table->foreign('away_team_id')->references('id')->on('teams');
         });
     }
 

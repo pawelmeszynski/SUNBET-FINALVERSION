@@ -17,7 +17,7 @@ class MatchesController extends Controller
     {
 
         return view('matches.ongoing-matches-list')->with([
-            'matches' => Schedule::orderBy('matchday', 'asc')
+            'matches' => Schedule::orderBy('utc_date', 'asc')
                 ->where('matchday', '!=', 'NULL')
                 ->where('competition_id', '=', '2000')
                 ->whereDoesntHave('predicts', function ($query) {

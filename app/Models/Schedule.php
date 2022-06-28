@@ -61,18 +61,18 @@ class Schedule extends Model
 
     public function awayTeam(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
-        return $this->hasOne(Team::class, 'away_team_id', 'id');
+        return $this->hasOne(Team::class, 'id', 'away_team_id');
     }
 
     public function homeTeam(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
-        return $this->hasOne(Team::class, 'home_team_id', 'id');
+        return $this->hasOne(Team::class, 'id', 'home_team_id');
     }
     public function predicts()
     {
         return $this->hasMany(Predict::class, 'match_id', 'id');
     }
-    public function competitions()
+    public function competition()
     {
         return $this->hasMany(Competition::class, 'competition_id', 'id');
     }

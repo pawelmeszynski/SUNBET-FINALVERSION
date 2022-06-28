@@ -34,7 +34,7 @@ class MatchesController extends Controller
         return response()->json([
             'status' => true,
             'message' => "Predict succesfully added",
-            'emails' => $result
+            'predict' => $result
         ], 200);
     }
 
