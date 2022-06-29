@@ -33,7 +33,7 @@ class Standings extends Model
     use HasFactory;
 
     protected $fillable = [
-        'stage', 'group', 'type',
+        'stage', 'group', 'type','competition_id',
     ];
 
     public function teams(): BelongsToMany

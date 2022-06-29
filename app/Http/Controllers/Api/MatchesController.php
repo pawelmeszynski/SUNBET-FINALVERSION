@@ -17,7 +17,12 @@ class MatchesController extends Controller
 {
     public function index()
     {
-        return new SchedulesCollection(Schedule::paginate(2));
+        return new SchedulesCollection(Schedule::orderBy('utc_date', 'asc')
+            ->where('matchday', '!=', 'NULL')
+            ->where('competition_id', '=', '2000')
+//            ->whereDoesntHave('predicts', function ($query) {
+//                $query->where('user_id', Auth::user()->id);
+            ->paginate(8));
     }
 
     public function store(StoreScoreRequest $request): \Illuminate\Http\JsonResponse

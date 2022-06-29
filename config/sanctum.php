@@ -1,6 +1,6 @@
 <?php
 
-use Laravel\Sanctum\Sanctum;
+use \Laravel\Sanctum\Sanctum;
 
 return [
 

@@ -25,12 +25,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware('auth')->prefix('matches')->group(function () {
+//Route::middleware('auth')->prefix('matches')->group(function () {
     Route::get('/', [MatchesController::class, 'index'])->name('matches.index');
     Route::patch('/update', [MatchesController::class, 'update'])->name('matches.update');
     Route::post('create', [MatchesController::class, 'create'])->name('matches.create');
     Route::get('/predicts', [MatchesController::class, 'predicts'])->name('matches.predicts');
-});
+//});
 
 //Route::get('/predicts', [MatchesController::class, 'predicts'])->name('predicts');
 

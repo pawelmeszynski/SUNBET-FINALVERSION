@@ -22,13 +22,8 @@ Route::post('register', [AuthApiController::class, 'register']);
 
 Route::post('login', [AuthApiController::class, 'login']);
 
-
-//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
-
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('logout', [AuthApiController::class, 'logout']);
+//Route::middleware('auth:sanctum')->group(function () {
+//    Route::post('logout', [AuthApiController::class, 'logout']);
 
     Route::apiresource('matches', MatchesController::class)->only('show', 'index');
 
@@ -54,10 +49,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/userstandings/{id}', [UserStandingsController::class, 'show']);
 
-    Route::get('user', function (Request $request) {
-        return $request->user();
-    });
-});
+//    Route::get('user', function (Request $request) {
+//        return $request->user();
+//    });
+//});
 
 //Route::middleware('auth:sanctum')->group(function() {
 
