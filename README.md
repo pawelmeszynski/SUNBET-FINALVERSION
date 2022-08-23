@@ -1,7 +1,7 @@
-1composer install
-2composer update
-3npm install
-4npm run dev
-5php artisan storage:link 
-6php artisan migrate:fresh --seed
-7php artisan data:fetch
+ - composer install
+ - composer update
+ - npm install
+ - npm run dev
+ - php artisan storage:link 
+ - php artisan migrate:fresh --seed
+ - php artisan data:fetch
