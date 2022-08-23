@@ -23,10 +23,12 @@
         <form action="{{ route('matches.create') }}" method="POST">
             <button type="submit" class="btn btn-success">Confirm</button>
             @foreach($matches as $match)
+{{--                {{ dd($match->utc_date); }}--}}
                 <div class="container">
                     <div class="match">
                         @csrf
                         @if(($homeTeam = $match->homeTeam) && ($awayTeam = $match->awayTeam))
+                            <label>Match date {{ $match->utc_date->format('d-m-Y') }}</label>
                             <p>{{ $homeTeam->name }}</p> <img src="{{ $homeTeam->crest }}">
                             <p>{{ $awayTeam->name}}</p> <img src="{{ $awayTeam->crest }}">
                             <h4>PREDICT SCORE</h4>

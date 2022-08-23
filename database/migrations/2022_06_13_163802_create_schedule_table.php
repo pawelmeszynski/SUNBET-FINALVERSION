@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('competition_id')->nullable();
             $table->unsignedBigInteger('home_team_id')->nullable();
             $table->unsignedBigInteger('away_team_id')->nullable();
-            $table->timestamp('utc_date');
+            $table->dateTime('utc_date')->nullable();
             $table->string('status')->nullable();
             $table->integer('matchday')->nullable();
             $table->string('stage')->nullable();

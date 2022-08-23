@@ -18,16 +18,9 @@
 <div>
     <h1>Current Matches</h1>
     <div>
-        @foreach($standings as $standing)
+        @foreach($players as $player)
             <div class="match">
-                <p>{{ $standing->group }} </p>
-                @foreach($standing->teams as $team)
-{{--                    {{ dd($team); }}--}}
-                    <div>
-                    <p>{{ $team->name }} </p>
-                    <img src="{{ $team->crest }}">
-                    </div>
-                @endforeach
+                <p>{{ $player->name }} </p>
             </div>
         @endforeach
     </div>

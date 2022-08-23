@@ -17,18 +17,16 @@ class StandingsController extends Controller
 //        return new SchedulesCollection(Standings::all()->where('competition_id', '=', '2000'));
         $standings = Standings::with('teams')->get();
 //        foreach($standings as $standing) {
-//            if ($standing) {
-//
+            if ($standings) {
                 return new StandingsCollection($standings);
-//            }
-
-            return [
-                'data' => [
-                    'status' => 'failed',
-                    'error' => 404,
-                ]
-            ];
-//        }
+            }else {
+                return [
+                    'data' => [
+                        'status' => 'failed',
+                        'error' => 404,
+                    ]
+                ];
+            }
     }
 
     public function show($id)

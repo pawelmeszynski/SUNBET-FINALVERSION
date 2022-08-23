@@ -39,10 +39,6 @@ class FetchMatches extends Command
         if(property_exists($response, 'matches')) {
             foreach ($response->matches as $match) {
 
-
-//                dump($match->utcDate);
-//                dump($match->utcDate);
-//            dd($match->homeTeam->id);
                 Schedule::updateOrCreate(
                     [
                         'id' => $match->id,

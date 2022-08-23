@@ -17,11 +17,9 @@ class MatchesController extends Controller
 {
     public function index()
     {
-        return new SchedulesCollection(Schedule::orderBy('utc_date', 'asc')
+        return new SchedulesCollection(Schedule::orderBy('utc_date', 'Asc')
             ->where('matchday', '!=', 'NULL')
             ->where('competition_id', '=', '2000')
-//            ->whereDoesntHave('predicts', function ($query) {
-//                $query->where('user_id', Auth::user()->id);
             ->paginate(8));
 
     }

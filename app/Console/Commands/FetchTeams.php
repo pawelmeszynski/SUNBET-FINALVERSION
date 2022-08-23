@@ -35,7 +35,6 @@ class FetchTeams extends Command
         $response = Http::withHeaders([
             'X-Auth-Token' => 'eb39c4511bf64a388e73dc566a8a99cd',
         ])->get('https://api.football-data.org/v4/competitions/' . $this->argument('code') . '/teams')->object();
-
         if (property_exists($response, 'teams')) {
             foreach ($response->teams as $team) {
                 Team::updateOrCreate(

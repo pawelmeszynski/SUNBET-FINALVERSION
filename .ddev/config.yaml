@@ -1,7 +1,7 @@
 name: SunBet
 type: laravel
 docroot: public
-php_version: "8.0"
+php_version: "8.1"
 webserver_type: nginx-fpm
 router_http_port: "80"
 router_https_port: "443"
@@ -9,8 +9,8 @@ xdebug_enabled: false
 additional_hostnames: []
 additional_fqdns: []
 database:
-  type: mariadb
-  version: "10.3"
+  type: mysql
+  version: "8.0"
 nfs_mount_enabled: false
 mutagen_enabled: false
 use_dns_when_possible: true

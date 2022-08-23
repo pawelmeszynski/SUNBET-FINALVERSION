@@ -21,6 +21,7 @@
     <div>
         @foreach($competitions as $competition)
             @foreach($competition->teams as $comp)
+{{--                {{ dd($competitions->standings); }}--}}
                 <div class="match">
                     <table>
                         <tr>

@@ -30,6 +30,7 @@ Route::middleware('auth')->prefix('matches')->group(function () {
     Route::patch('/update', [MatchesController::class, 'update'])->name('matches.update');
     Route::post('create', [MatchesController::class, 'create'])->name('matches.create');
     Route::get('/predicts', [MatchesController::class, 'predicts'])->name('matches.predicts');
+    Route::get('/players', [MatchesController::class, 'players'])->name('matches.players');
 });
 
 //Route::get('/predicts', [MatchesController::class, 'predicts'])->name('predicts');
@@ -39,18 +40,6 @@ Route::get('/userstanding', [UserStandings::class, 'index'])->name('userstanding
 Route::get('/standings', [StandingsController::class, 'index'])->name('standings');
 
 Route::get('/teams', [TeamsController::class, 'index'])->name('teams');
-
-Route::get('/test', function () {
-    $competition = Competition::find(2000);
-    $area = $competition->area;
-    $match = Schedule::first();
-    dump('competiton: ' . $competition->name);
-    dump('area: ' . $competition->area->name);
-    dump('competions: ' . $area->competitions);
-    dump('firstMatch: ');
-    dump('home_team_id' . $match->home_team . 'away_team_id' . $match->away_team);
-
-});
 
 Route::get('/migrate', function () {
     dump(Artisan::call('migrate'));
@@ -80,6 +69,9 @@ Route::get('/fetch-matches', function () {
 });
 Route::get('/calculate-points', function () {
     dump(Artisan::call('points:calculate'));
+});
+Route::get('/fetch-players', function () {
+    dump(Artisan::call('players:fetch'));
 });
 Route::group(['middleware' => ['auth']], function () {
     /**

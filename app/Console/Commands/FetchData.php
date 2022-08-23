@@ -35,9 +35,17 @@ class   FetchData extends Command
      */
     public function handle()
     {
-        Artisan::call('areas:fetch');
+        $progressbar = $this->output->createProgressBar();
+        $progressbar->start();
 
-        Artisan::call('competitions:fetch');
+        if (Artisan::call('areas:fetch')) $progressbar->setMessage('Areas fetched');
+        {
+            $progressbar->advance();
+        }
+        if (Artisan::call('competitions:fetch')) $progressbar->setMessage('Competitions fetched');
+        {
+            $progressbar->advance();
+        }
 
 
         $competitions = Competition::all('code');
@@ -45,9 +53,10 @@ class   FetchData extends Command
             $exitCode = Artisan::call('teams:fetch ' . $competition->code);
             $exitCode = Artisan::call('matches:fetch ' . $competition->code);
             $exitCode = Artisan::call('standings:fetch ' . $competition->code);
+//            $exitCode = Artisan::call('players:fetch ' . $competition->code);
             sleep(60);
         });
-
+        $progressbar->finish();
         return 0;
     }
 }

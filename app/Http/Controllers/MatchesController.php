@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreScoreRequest;
 use App\Http\Requests\UpdateScoreRequest;
+use App\Models\Player;
 use App\Models\Predict;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
@@ -17,7 +18,7 @@ class MatchesController extends Controller
     {
 
         return view('matches.ongoing-matches-list')->with([
-            'matches' => Schedule::orderBy('utc_date', 'asc')
+            'matches' => Schedule::orderBy('utc_date')
                 ->where('matchday', '!=', 'NULL')
                 ->where('competition_id', '=', '2000')
                 ->whereDoesntHave('predicts', function ($query) {
@@ -71,6 +72,11 @@ class MatchesController extends Controller
                 ->where('competition_id', '=', '2000'),
             'predicts' => Predict::all(),
         ]); // user found
-
+    }
+    public function players()
+    {
+        return view('matches.players')->with([
+            'players' => Player::all()
+        ]);
     }
 }
